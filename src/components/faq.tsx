@@ -30,9 +30,11 @@ export default function Faq() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
-    <section className="px-4 pt-20">
-      <h2 className="text-center text-[32px] leading-[40px]">FAQ</h2>
-      <div className="mt-[72px]">
+    <section className="px-4 pt-20 lg:pt-32">
+      <h2 className="text-center text-[32px] leading-[40px] lg:text-[48px] lg:leading-[56px]">
+        FAQ
+      </h2>
+      <div className="mt-[72px] lg:mx-auto lg:max-w-[744px]">
         {faqItems.map((item, i) => (
           <div
             key={i}

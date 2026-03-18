@@ -1,19 +1,21 @@
-import Header from "@/components/header";
-import Hero from "@/components/hero";
-import FeaturedContent from "@/components/featured-content";
-import Events from "@/components/events";
-import StudentFeatures from "@/components/student-features";
-import TeacherFeatures from "@/components/teacher-features";
-import DailyLife from "@/components/daily-life";
-import StudentWorks from "@/components/student-works";
-import Faq from "@/components/faq";
-import CareerPath from "@/components/career-path";
-import SiteFooter from "@/components/site-footer";
+import Header from "@/components/Header";
+import HeaderNav from "@/components/HeaderNav";
+import Hero from "@/components/Hero";
+import FeaturedContent from "@/components/FeaturedContent";
+import Events from "@/components/Events";
+import StudentFeatures from "@/components/StudentFeatures";
+import TeacherFeatures from "@/components/TeacherFeatures";
+import DailyLife from "@/components/DailyLife";
+import StudentWorks from "@/components/StudentWorks";
+import Faq from "@/components/Faq";
+import CareerPath from "@/components/CareerPath";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
     <>
       <Header />
+      <HeaderNav />
       <Hero />
       <FeaturedContent />
       <Events />
@@ -23,7 +25,7 @@ export default function Home() {
       <StudentWorks />
       <Faq />
       <CareerPath />
-      <SiteFooter />
+      <Footer />
     </>
   );
 }
