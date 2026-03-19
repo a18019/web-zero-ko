@@ -16,12 +16,10 @@ export default function StudentWorks() {
     useState<(typeof worksTabItems)[number]>("事業");
 
   return (
-    <section className="px-4 pt-20 lg:pt-32">
-      <h2 className="text-center text-[32px] leading-[40px] lg:text-[48px] lg:leading-[56px]">
-        生徒作品
-      </h2>
+    <section className="px-4 pt-24">
+      <h2 className="text-center text-[32px] leading-[40px]">生徒作品</h2>
       {/* タブ */}
-      <div className="mt-20 flex items-center gap-2 rounded-full border border-black p-1 lg:mx-auto lg:mt-16 lg:max-w-[744px] lg:gap-6">
+      <div className="mt-20 flex items-center gap-2 rounded-full border border-black p-1">
         {worksTabItems.map((tab) => (
           <button
             key={tab}
@@ -33,7 +31,7 @@ export default function StudentWorks() {
         ))}
       </div>
       {/* 作品カード: mobile=1列, desktop=3列 */}
-      <div className="mt-6 flex flex-col gap-2 lg:mx-auto lg:mt-12 lg:grid lg:max-w-[1128px] lg:grid-cols-3 lg:gap-6">
+      <div className="mt-6 flex flex-col gap-2">
         {works.map((work, i) => (
           <div key={i} className="flex flex-col gap-2">
             <Image

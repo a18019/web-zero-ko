@@ -28,14 +28,14 @@ export default function HeaderNav() {
                 isMenuOpen
                   ? "-translate-y-1 rotate-135"
                   : "translate-y-1 rotate-225"
-              } absolute h-px w-2.5 origin-[0.5px_50%] bg-black transition-transform`}
+              } absolute h-px w-2.5 origin-[0.5px_50%] rounded-full bg-black transition-transform`}
             ></span>
             <span
               className={`${
                 isMenuOpen
                   ? "-translate-y-1 rotate-45"
                   : "translate-y-1 -rotate-45"
-              } absolute h-px w-2.5 origin-[0.5px_50%] bg-black transition-transform`}
+              } absolute h-px w-2.5 origin-[0.5px_50%] rounded-full bg-black transition-transform`}
             ></span>
           </span>
         </button>
