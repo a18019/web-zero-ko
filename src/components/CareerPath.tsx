@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function CareerPath() {
   return (
-    <section className="px-4 pt-24">
+    <section className="px-4 pt-40">
       <h2 className="text-center text-[32px] leading-[40px]">進路</h2>
 
       <div>

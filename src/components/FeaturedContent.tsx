@@ -11,8 +11,8 @@ export default async function FeaturedContent() {
   const pages = await fetchPages();
 
   return (
-    <section className="pt-24">
-      <div className="mx-4 flex flex-col gap-12">
+    <section className="pt-40">
+      <div className="mx-4 flex flex-col gap-6">
         {pages[0] && (
           <Link
             href={`/articles/${pages[0].id}`}

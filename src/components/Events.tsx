@@ -7,7 +7,7 @@ export default async function Events() {
   if (events.length === 0) return null;
 
   return (
-    <section className="pt-24">
+    <section className="pt-40">
       <h2 className="text-center text-[32px] leading-[40px]">イベント</h2>
       <div className="mx-4">
         <div className="mt-[32px] flex flex-col gap-6">

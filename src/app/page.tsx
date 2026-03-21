@@ -9,6 +9,7 @@ import DailyLife from "@/components/DailyLife";
 import StudentWorks from "@/components/StudentWorks";
 import Faq from "@/components/Faq";
 import CareerPath from "@/components/CareerPath";
+import Cta from "@/components/Cta";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -25,6 +26,7 @@ export default function Home() {
       <StudentWorks />
       <Faq />
       <CareerPath />
+      <Cta />
       <Footer />
     </>
   );

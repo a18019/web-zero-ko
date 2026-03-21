@@ -16,7 +16,7 @@ export default function StudentWorks() {
     useState<(typeof worksTabItems)[number]>("事業");
 
   return (
-    <section className="px-4 pt-24">
+    <section className="px-4 pt-40">
       <h2 className="text-center text-[32px] leading-[40px]">生徒作品</h2>
       {/* タブ */}
       <div className="mt-20 flex items-center gap-2 rounded-full border border-black p-1">

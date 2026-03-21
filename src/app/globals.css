@@ -18,6 +18,8 @@
   --z-index-header-toggle: 8;
   --z-index-header-nav: 7;
   --z-index-header: 6;
+  --z-index-header-nav-menu: 4;
+  --z-index-header-nav: 3;
 }
 
 body {

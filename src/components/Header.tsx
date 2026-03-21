@@ -1,8 +1,5 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 const mobileNavLinks = [
   { label: "学校説明会", href: "https://www.zero-ko.com/information-session/" },
@@ -17,38 +14,28 @@ const mobileNavLinks = [
 ];
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
-    <header className="z-header sticky top-0 left-0 bg-white">
+    <header className="group bg-white">
       <div className="flex items-center justify-between">
         <div className="flex">
-          <button
-            className="z-header-toggle relative grid h-12 w-12 place-items-center"
-            onClick={() => setIsMenuOpen((prev) => !prev)}
-          >
+          <label className="z-header-toggle relative grid h-12 w-12 place-items-center">
+            <input type="checkbox" className="sr-only inset-0" />
             {[
-              ["rotate-45", "translate-y-2"],
-              ["hidden", ""],
-              ["-rotate-45", "-translate-y-2"],
-            ].map(([opened, closed], i) => (
+              "group-has-checked:rotate-45 group-has-checked:translate-y-0 translate-y-2",
+              "group-has-checked:hidden",
+              "group-has-checked:-rotate-45 group-has-checked:-translate-y-0 -translate-y-2",
+            ].map((className, i) => (
               <span
                 key={i}
-                className={`${isMenuOpen ? opened : closed} absolute h-px w-6 rounded-full bg-black`}
+                className={`absolute h-px w-6 rounded-full bg-black ${className}`}
               />
             ))}
-          </button>
+          </label>
           <Link href="/" className="grid h-12 w-12 place-items-center">
-            <Image src="logo.svg" alt="" width={24} height={24} />
+            <Image src="/logo.svg" alt="" width={24} height={24} />
           </Link>
         </div>
-        <nav
-          className={`${
-            isMenuOpen
-              ? "h-dvh [clip-path:inset(0_0_0_0)] [transition:clip-path_150ms]"
-              : "h-0 [clip-path:inset(0_0_100%_0)] [transition:clip-path_150ms,height_0s_150ms]"
-          } z-header-nav fixed top-0 right-0 left-0 overflow-y-scroll bg-white`}
-        >
+        <nav className="z-header-nav-menu fixed inset-0 hidden overflow-y-scroll bg-white [clip-path:inset(0_0_100%_0)] [transition:clip-path_150ms,display_150ms_allow-discrete] group-has-checked:block group-has-checked:[clip-path:inset(0_0_0_0)] starting:group-has-checked:[clip-path:inset(0_0_100%_0)]">
           <ul className="pt-20 pb-16">
             {mobileNavLinks.map((navLink) => (
               <li key={navLink.label}>

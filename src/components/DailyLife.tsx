@@ -13,7 +13,7 @@ export default async function DailyLife() {
   if (articles.length === 0) return null;
 
   return (
-    <section className="px-4 pt-24">
+    <section className="px-4 pt-40">
       <h2 className="text-center text-[32px] leading-[40px]">ゼロ高日常</h2>
       <div className="mt-12 flex flex-col gap-8">
         {articles.map((page) => (
