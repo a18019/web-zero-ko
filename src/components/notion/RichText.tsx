@@ -1,4 +1,5 @@
 import type { RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
+import { cn } from "@/lib/utils";
 
 const colorMap: Record<string, string> = {
   default: "",
@@ -26,18 +27,16 @@ const colorMap: Record<string, string> = {
 function RichTextItem({ item }: { item: RichTextItemResponse }) {
   const { annotations, plain_text, href } = item;
 
-  const classes: string[] = [];
-  if (annotations.bold) classes.push("font-bold");
-  if (annotations.italic) classes.push("italic");
-  if (annotations.strikethrough) classes.push("line-through");
-  if (annotations.underline) classes.push("underline");
-  if (annotations.code)
-    classes.push(
-      "rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm text-red-600",
-    );
-  if (annotations.color && colorMap[annotations.color]) {
-    classes.push(colorMap[annotations.color]);
-  }
+  const className =
+    cn(
+      annotations.bold && "font-bold",
+      annotations.italic && "italic",
+      annotations.strikethrough && "line-through",
+      annotations.underline && "underline",
+      annotations.code &&
+        "rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm text-red-600",
+      annotations.color && colorMap[annotations.color],
+    ) || undefined;
 
   if (item.type === "equation") {
     return (
@@ -47,15 +46,13 @@ function RichTextItem({ item }: { item: RichTextItemResponse }) {
     );
   }
 
-  const className = classes.length > 0 ? classes.join(" ") : undefined;
-
   let element = <span className={className}>{plain_text}</span>;
 
   if (href) {
     element = (
       <a
         href={href}
-        className={`text-blue-600 underline hover:text-blue-800 ${className ?? ""}`}
+        className={cn("text-blue-600 underline hover:text-blue-800", className)}
         target="_blank"
         rel="noopener noreferrer"
       >

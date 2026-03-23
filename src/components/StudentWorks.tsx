@@ -1,9 +1,6 @@
-"use client";
-
 import Image from "next/image";
-import { useState } from "react";
 
-const worksTabItems = ["事業", "アート", "動画"] as const;
+const worksTabItems = ["事業", "アート", "動画"];
 
 const works = [
   { title: "テキストテキストテキスト" },
@@ -12,38 +9,42 @@ const works = [
 ];
 
 export default function StudentWorks() {
-  const [activeTab, setActiveTab] =
-    useState<(typeof worksTabItems)[number]>("事業");
-
   return (
-    <section className="px-4 pt-40">
-      <h2 className="text-center text-[32px] leading-[40px]">生徒作品</h2>
-      {/* タブ */}
-      <div className="mt-20 flex items-center gap-2 rounded-full border border-black p-1">
-        {worksTabItems.map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`flex h-[48px] flex-1 items-center justify-center rounded-full px-6 py-[10px] text-[16px] leading-[26px] ${activeTab === tab ? "bg-black text-white" : "text-black"}`}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
-      {/* 作品カード: mobile=1列, desktop=3列 */}
-      <div className="mt-6 flex flex-col gap-2">
-        {works.map((work, i) => (
-          <div key={i} className="flex flex-col gap-2">
-            <Image
-              src="/demo-image.png"
-              alt=""
-              width={328}
-              height={186}
-              className="aspect-328/186 w-full object-cover"
-            />
-            <p className="text-[16px] leading-[26px]">{work.title}</p>
-          </div>
-        ))}
+    <section>
+      <div className="mx-4">
+        <h2 className="text-center text-[32px] leading-[40px]">生徒作品</h2>
+        <fieldset className="mt-12 flex items-center gap-2">
+          <legend className="sr-only">生徒作品カテゴリ</legend>
+          {worksTabItems.map((tab, i) => (
+            <label
+              key={tab}
+              className="flex h-12 flex-1 cursor-pointer items-center justify-center rounded-full border border-black text-[20px] leading-[28px] text-black has-checked:bg-black has-checked:text-white"
+            >
+              <input
+                type="radio"
+                name="works-category"
+                value={tab}
+                defaultChecked={i === 0}
+                className="sr-only"
+              />
+              {tab}
+            </label>
+          ))}
+        </fieldset>
+        <div className="mt-8 flex flex-col gap-6">
+          {works.map((work, i) => (
+            <div key={i} className="flex flex-col gap-2">
+              <Image
+                src="/demo-image.png"
+                alt=""
+                width={328}
+                height={186}
+                className="aspect-328/186 w-full object-cover"
+              />
+              <p className="text-[16px] leading-[26px]">{work.title}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

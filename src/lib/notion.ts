@@ -14,18 +14,22 @@ export type BlockWithChildren = BlockObjectResponse & {
   children?: BlockWithChildren[];
 };
 
+function isPage(r: { object: string }): r is PageObjectResponse {
+  return r.object === "page" && "properties" in r;
+}
+
 export function getTitle(
   page: PageObjectResponse,
   fallback = "タイトルなし",
 ): string {
-  const prop = page.properties?.title;
+  const prop = page.properties.title;
   return prop?.type === "title"
     ? (prop.title[0]?.plain_text ?? fallback)
     : fallback;
 }
 
 export function getCategory(page: PageObjectResponse, fallback = ""): string {
-  const category = page.properties?.category;
+  const category = page.properties.category;
   return category?.type === "select"
     ? (category.select?.name ?? fallback)
     : fallback;
@@ -35,7 +39,7 @@ export function getThumbnailUrl(
   page: PageObjectResponse,
   fallback = "",
 ): string {
-  const prop = page.properties?.thumbnail;
+  const prop = page.properties.thumbnail;
   if (prop?.type === "files") {
     const file = prop.files[0];
     if (file?.type === "file") return file.file.url;
@@ -70,11 +74,7 @@ export async function fetchPages(): Promise<PageObjectResponse[]> {
       start_cursor: cursor,
     });
 
-    for (const result of response.results) {
-      if (result.object === "page" && "properties" in result) {
-        pages.push(result as PageObjectResponse);
-      }
-    }
+    pages.push(...response.results.filter(isPage));
 
     cursor = response.next_cursor ?? undefined;
   } while (cursor);
@@ -83,7 +83,7 @@ export async function fetchPages(): Promise<PageObjectResponse[]> {
 }
 
 export function getEventTitle(page: PageObjectResponse, fallback = ""): string {
-  const prop = page.properties?.eventTitle;
+  const prop = page.properties.eventTitle;
   if (prop?.type === "rich_text") {
     return prop.rich_text[0]?.plain_text ?? fallback;
   }
@@ -91,8 +91,7 @@ export function getEventTitle(page: PageObjectResponse, fallback = ""): string {
 }
 
 function formatDate(iso: string): string {
-  const [y, m, d] = iso.split("T")[0].split("-");
-  return `${y}/${m}/${d}`;
+  return iso.split("T")[0].replaceAll("-", "/");
 }
 
 export function getEventDate(page: PageObjectResponse): {
@@ -100,7 +99,7 @@ export function getEventDate(page: PageObjectResponse): {
   start: string;
   end: string | null;
 } {
-  const prop = page.properties?.eventDate;
+  const prop = page.properties.eventDate;
   if (prop?.type === "date" && prop.date) {
     const { start, end } = prop.date;
     const display = end
@@ -111,11 +110,19 @@ export function getEventDate(page: PageObjectResponse): {
   return { display: "", start: "", end: null };
 }
 
+export function getAuthor(page: PageObjectResponse, fallback = ""): string {
+  const prop = page.properties.author;
+  if (prop?.type === "rich_text") {
+    return prop.rich_text[0]?.plain_text ?? fallback;
+  }
+  return fallback;
+}
+
 export function getPublicationDate(
   page: PageObjectResponse,
   fallback = "",
 ): string {
-  const prop = page.properties?.publicationDate;
+  const prop = page.properties.publicationDate;
   if (prop?.type === "date" && prop.date) {
     const d = new Date(prop.date.start);
     return `${d.getFullYear()}年${d.getMonth() + 1}月`;
@@ -136,9 +143,7 @@ export async function fetchDailyLifeArticles(): Promise<PageObjectResponse[]> {
     page_size: 3,
   });
 
-  return response.results.filter(
-    (r): r is PageObjectResponse => r.object === "page" && "properties" in r,
-  );
+  return response.results.filter(isPage);
 }
 
 export async function fetchEvents(): Promise<PageObjectResponse[]> {
@@ -155,9 +160,7 @@ export async function fetchEvents(): Promise<PageObjectResponse[]> {
     page_size: 10,
   });
 
-  const pages = response.results.filter(
-    (r): r is PageObjectResponse => r.object === "page" && "properties" in r,
-  );
+  const pages = response.results.filter(isPage);
 
   return pages
     .filter((page) => {
@@ -189,16 +192,13 @@ export async function fetchBlocksWithChildren(
     });
 
     for (const block of response.results) {
-      const fullBlock = block as BlockObjectResponse;
-      const blockWithChildren: BlockWithChildren = { ...fullBlock };
-
-      if (fullBlock.has_children) {
-        blockWithChildren.children = await fetchBlocksWithChildren(
-          fullBlock.id,
-        );
-      }
-
-      blocks.push(blockWithChildren);
+      const b = block as BlockObjectResponse;
+      blocks.push({
+        ...b,
+        ...(b.has_children && {
+          children: await fetchBlocksWithChildren(b.id),
+        }),
+      });
     }
 
     cursor = response.next_cursor ?? undefined;

@@ -11,7 +11,7 @@ export default async function FeaturedContent() {
   const pages = await fetchPages();
 
   return (
-    <section className="pt-40">
+    <section>
       <div className="mx-4 flex flex-col gap-6">
         {pages[0] && (
           <Link
@@ -25,7 +25,7 @@ export default async function FeaturedContent() {
               height={219}
               className="aspect-328/219 w-full rounded-b-[23px] object-cover"
             />
-            <div className="px-6 py-8">
+            <div className="px-6 py-6">
               <p className="text-[14px] leading-[20px]">
                 {getCategory(pages[0])}
               </p>
@@ -36,7 +36,7 @@ export default async function FeaturedContent() {
           </Link>
         )}
         <div>
-          <p className="border-b border-black text-[14px] leading-[20px]">
+          <p className="border-b border-black pb-1 text-[14px] leading-[20px]">
             注目のコンテンツ
           </p>
           <div className="mt-4 flex flex-col gap-6">

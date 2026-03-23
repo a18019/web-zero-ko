@@ -1,5 +1,6 @@
 import type { BlockWithChildren } from "@/lib/notion";
-import type { RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
+import { cn } from "@/lib/utils";
+
 import { RichText } from "./RichText";
 
 function getFileUrl(
@@ -47,28 +48,28 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
   switch (block.type) {
     case "paragraph":
       return (
-        <p>
+        <p className="mb-6 text-base leading-[26px]">
           <RichText items={block.paragraph.rich_text} />
         </p>
       );
 
     case "heading_1":
       return (
-        <h2 className="mt-8 mb-4 text-2xl font-bold">
+        <h2 className="mt-12 mb-6 text-xl leading-[28px] font-bold">
           <RichText items={block.heading_1.rich_text} />
         </h2>
       );
 
     case "heading_2":
       return (
-        <h3 className="mt-6 mb-3 text-xl font-bold">
+        <h3 className="mt-8 mb-4 text-lg leading-[28px] font-bold">
           <RichText items={block.heading_2.rich_text} />
         </h3>
       );
 
     case "heading_3":
       return (
-        <h4 className="mt-4 mb-2 text-lg font-bold">
+        <h4 className="mt-6 mb-3 text-base leading-[26px] font-bold">
           <RichText items={block.heading_3.rich_text} />
         </h4>
       );
@@ -125,11 +126,8 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
       );
 
     case "callout": {
-      const icon = block.callout.icon;
-      let iconDisplay: string | null = null;
-      if (icon?.type === "emoji") {
-        iconDisplay = icon.emoji;
-      }
+      const iconDisplay =
+        block.callout.icon?.type === "emoji" ? block.callout.icon.emoji : null;
 
       return (
         <div className="flex gap-3 rounded-lg bg-gray-50 p-4">
@@ -143,9 +141,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
     }
 
     case "code": {
-      const codeText = block.code.rich_text
-        .map((t: RichTextItemResponse) => t.plain_text)
-        .join("");
+      const codeText = block.code.rich_text.map((t) => t.plain_text).join("");
 
       return (
         <div className="overflow-hidden rounded-lg border">
@@ -165,22 +161,19 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
     }
 
     case "divider":
-      return <hr className="my-6 border-gray-200" />;
+      return <hr className="my-8 border-gray-200" />;
 
     case "image": {
       const imageUrl = getFileUrl(block.image);
       const caption = "caption" in block.image ? block.image.caption : [];
 
       return (
-        <figure>
+        <figure className="my-8">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imageUrl}
-            alt={
-              caption.map((c: RichTextItemResponse) => c.plain_text).join("") ||
-              "image"
-            }
-            className="max-w-full rounded"
+            alt={caption.map((c) => c.plain_text).join("") || "image"}
+            className="w-full"
           />
           {caption.length > 0 && (
             <figcaption className="mt-2 text-center text-sm text-gray-500">
@@ -197,7 +190,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
       const youtubeId = extractYouTubeId(videoUrl);
 
       return (
-        <figure>
+        <figure className="my-16">
           {youtubeId ? (
             <iframe
               src={`https://www.youtube.com/embed/${youtubeId}`}
@@ -314,30 +307,28 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
               {rows.map((row, rowIndex) => {
                 if (row.type !== "table_row") return null;
                 const isHeader =
-                  (rowIndex === 0 && block.table.has_column_header) || false;
-                const Tag = isHeader ? "th" : "td";
+                  rowIndex === 0 && block.table.has_column_header;
 
                 return (
-                  <tr key={row.id} className={isHeader ? "bg-gray-50" : ""}>
-                    {row.table_row.cells.map(
-                      (cell: RichTextItemResponse[], cellIndex: number) => {
-                        const isRowHeader =
-                          cellIndex === 0 && block.table.has_row_header;
+                  <tr key={row.id} className={cn(isHeader && "bg-gray-50")}>
+                    {row.table_row.cells.map((cell, cellIndex) => {
+                      const isRowHeader =
+                        cellIndex === 0 && block.table.has_row_header;
+                      const Tag = isRowHeader || isHeader ? "th" : "td";
 
-                        return isRowHeader || isHeader ? (
-                          <th
-                            key={cellIndex}
-                            className="border px-3 py-2 text-left font-semibold"
-                          >
-                            <RichText items={cell} />
-                          </th>
-                        ) : (
-                          <Tag key={cellIndex} className="border px-3 py-2">
-                            <RichText items={cell} />
-                          </Tag>
-                        );
-                      },
-                    )}
+                      return (
+                        <Tag
+                          key={cellIndex}
+                          className={cn(
+                            "border px-3 py-2",
+                            (isRowHeader || isHeader) &&
+                              "text-left font-semibold",
+                          )}
+                        >
+                          <RichText items={cell} />
+                        </Tag>
+                      );
+                    })}
                   </tr>
                 );
               })}
@@ -426,9 +417,8 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
       return (
         <div className="rounded border p-3">
           🎙️{" "}
-          {block.meeting_notes.title
-            ?.map((t: RichTextItemResponse) => t.plain_text)
-            .join("") ?? "Meeting Notes"}
+          {block.meeting_notes.title?.map((t) => t.plain_text).join("") ??
+            "Meeting Notes"}
         </div>
       );
 
@@ -436,9 +426,8 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
       return (
         <div className="rounded border p-3">
           🎙️{" "}
-          {block.transcription.title
-            ?.map((t: RichTextItemResponse) => t.plain_text)
-            .join("") ?? "Transcription"}
+          {block.transcription.title?.map((t) => t.plain_text).join("") ??
+            "Transcription"}
         </div>
       );
 
