@@ -35,8 +35,8 @@ const teachers = [
 export default function TeacherFeatures() {
   return (
     <section>
-      <div className="mx-4">
-        <h2 className="text-center text-[32px] leading-[40px]">講師特集</h2>
+      <div className="w-inner mx-auto max-w-[1128px]">
+        <h2 className="text-heading-lg text-center">講師特集</h2>
         <div className="-mx-4 mt-12 overflow-hidden">
           <ul className="flex snap-x snap-mandatory scroll-pl-8 gap-4 overflow-x-scroll px-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {teachers.map((teacher, i) => (
@@ -52,15 +52,9 @@ export default function TeacherFeatures() {
                     alt=""
                     className="aspect-video w-full object-cover"
                   />
-                  <p className="mt-2 text-[12px] leading-[18px]">
-                    {teacher.role}
-                  </p>
-                  <p className="mt-2 text-[20px] leading-[28px]">
-                    {teacher.name}
-                  </p>
-                  <p className="mt-2 text-[14px] leading-[20px]">
-                    {teacher.bio}
-                  </p>
+                  <p className="text-label-sm mt-2">{teacher.role}</p>
+                  <p className="text-heading-sm mt-2">{teacher.name}</p>
+                  <p className="text-body-sm mt-2">{teacher.bio}</p>
                 </Link>
               </li>
             ))}

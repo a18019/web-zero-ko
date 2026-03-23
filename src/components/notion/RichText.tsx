@@ -1,4 +1,5 @@
 import type { RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
+
 import { cn } from "@/lib/utils";
 
 const colorMap: Record<string, string> = {
@@ -34,13 +35,13 @@ function RichTextItem({ item }: { item: RichTextItemResponse }) {
       annotations.strikethrough && "line-through",
       annotations.underline && "underline",
       annotations.code &&
-        "rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm text-red-600",
+        "rounded bg-gray-100 px-1.5 py-0.5 font-mono text-body-sm text-red-600",
       annotations.color && colorMap[annotations.color],
     ) || undefined;
 
   if (item.type === "equation") {
     return (
-      <code className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm">
+      <code className="text-body-sm rounded bg-gray-100 px-1.5 py-0.5 font-mono">
         {item.equation.expression}
       </code>
     );

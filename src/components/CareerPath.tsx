@@ -3,8 +3,8 @@ import Image from "next/image";
 export default function CareerPath() {
   return (
     <section>
-      <div className="mx-4">
-        <h2 className="text-center text-[32px] leading-[40px]">進路</h2>
+      <div className="w-inner mx-auto max-w-[1128px]">
+        <h2 className="text-heading-lg text-center">進路</h2>
 
         <div>
           <Image
@@ -14,7 +14,7 @@ export default function CareerPath() {
             height={184}
             className="mt-12 h-[184px] w-full object-cover"
           />
-          <p className="mt-6 text-[16px] leading-[26px]">
+          <p className="text-body mt-6">
             説明が入ります説明が入ります説明が入ります説明が入ります説明が入ります説明が入ります説明が入ります説明が入ります。
           </p>
         </div>

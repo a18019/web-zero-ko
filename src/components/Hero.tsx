@@ -1,9 +1,9 @@
 export default function Hero() {
   return (
     <section className="text-center">
-      <div className="mx-4">
-        <h1 className="text-[32px] leading-[40px]">タイトル</h1>
-        <p className="mt-8 text-[20px] leading-[28px]">
+      <div className="w-inner mx-auto max-w-[1128px]">
+        <h1 className="text-heading-lg lg:text-display">タイトル</h1>
+        <p className="text-heading-sm lg:text-display mt-8">
           キャッチコピーキャッチコピーキャッチコピーキャッチコピーキャッチコピー
         </p>
       </div>

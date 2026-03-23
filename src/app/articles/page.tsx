@@ -1,7 +1,7 @@
 import Cta from "@/components/Cta";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import HeaderNav from "@/components/SubNav";
+import SubNav from "@/components/SubNav";
 import {
   fetchPages,
   getCategory,
@@ -19,46 +19,38 @@ export default async function ArticlesPage() {
   return (
     <>
       <Header />
-      <HeaderNav />
-      <section className="px-4 pt-16 pb-20">
-        <h1 className="text-center text-[32px] leading-[40px] font-bold">
-          ニュース
-        </h1>
-        <p className="mt-4 text-center text-[16px] leading-[26px]">
-          ゼロ高等学院の最新ニュースをお届けします
-        </p>
-        <div className="mt-16 flex flex-col gap-12">
-          {pages.map((page) => {
-            const thumbnail = getThumbnailUrl(page);
-            return (
-              <Link
-                key={page.id}
-                href={`/articles/${page.id}`}
-                className="flex flex-col gap-6 rounded-[24px] border border-black p-6"
-              >
-                {thumbnail ? (
+      <SubNav />
+      <section className="pt-16 pb-20">
+        <div className="w-inner mx-auto max-w-[1128px]">
+          <h1 className="text-heading-lg text-center font-bold">ニュース</h1>
+          <p className="text-body mt-4 text-center">
+            ゼロ高等学院の最新ニュースをお届けします
+          </p>
+          <div className="mt-16 flex flex-col gap-12">
+            {pages.map((page) => {
+              const thumbnail = getThumbnailUrl(page);
+              return (
+                <Link
+                  key={page.id}
+                  href={`/articles/${page.id}`}
+                  className="flex flex-col gap-6 rounded-[24px] border border-black p-6"
+                >
                   <Image
-                    src={thumbnail}
+                    src={thumbnail || "/demo-image.png"}
                     alt=""
                     width={328}
                     height={184}
                     className="aspect-328/184 w-full object-cover"
                   />
-                ) : (
-                  <div className="bg-muted aspect-328/184 w-full" />
-                )}
-                <div className="flex flex-col gap-4">
-                  <p className="text-[14px] leading-[20px]">
-                    {getCategory(page)}
-                  </p>
-                  <p className="text-[20px] leading-[28px]">{getTitle(page)}</p>
-                  <p className="text-[12px] leading-[18px]">
-                    {getPublicationDate(page)}
-                  </p>
-                </div>
-              </Link>
-            );
-          })}
+                  <div className="flex flex-col gap-4">
+                    <p className="text-body-sm">{getCategory(page)}</p>
+                    <p className="text-heading-sm">{getTitle(page)}</p>
+                    <p className="text-label-sm">{getPublicationDate(page)}</p>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </section>
       <Cta />

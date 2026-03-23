@@ -26,7 +26,10 @@ export default function Header() {
           ].map((className, i) => (
             <span
               key={i}
-              className={`absolute h-px w-6 rounded-full bg-black ${className}`}
+              className={cn(
+                "absolute h-px w-6 rounded-full bg-black",
+                className,
+              )}
             />
           ))}
         </label>
@@ -50,7 +53,7 @@ export default function Header() {
             {mobileNavLinks.map((navLink) => (
               <li key={navLink.label}>
                 <a
-                  className="lg;leading-[18px] block py-3.5 pl-12 text-[14px] leading-[20px] lg:p-0 lg:text-[12px]"
+                  className="text-body-sm lg:text-label-sm block py-3.5 pl-12 lg:p-0"
                   href={navLink.href}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -65,7 +68,7 @@ export default function Header() {
           href="https://www.zero-ko.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className="mr-4 ml-auto grid h-6 place-items-center rounded-full bg-black px-2.5 text-xs text-white"
+          className="text-label-sm mr-4 ml-auto grid h-6 place-items-center rounded-full bg-black px-2.5 text-white"
         >
           公式サイトへ
         </a>

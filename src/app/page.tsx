@@ -9,15 +9,15 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import StudentFeatures from "@/components/StudentFeatures";
 import StudentWorks from "@/components/StudentWorks";
-import HeaderNav from "@/components/SubNav";
+import SubNav from "@/components/SubNav";
 import TeacherFeatures from "@/components/TeacherFeatures";
 
 export default function Home() {
   return (
     <>
       <Header />
-      <HeaderNav />
-      <main className="flex flex-col gap-40 pt-16">
+      <SubNav />
+      <main className="flex flex-col gap-40 pt-16 lg:pt-24">
         <Hero />
         <FeaturedContent />
         <Events />

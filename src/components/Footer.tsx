@@ -17,7 +17,7 @@ const footerLinks = [
 export default function Footer() {
   return (
     <footer className="border-t border-black py-4">
-      <div className="mx-4 grid grid-cols-1 grid-rows-3 items-center gap-6">
+      <div className="w-inner mx-auto grid max-w-[1128px] grid-cols-1 grid-rows-3 items-center gap-6">
         <nav>
           <ul className="-ml-4 flex">
             {socialLinks.map((socialLink) => (

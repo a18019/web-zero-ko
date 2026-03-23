@@ -1,5 +1,5 @@
 import Header from "@/components/Header";
-import HeaderNav from "@/components/SubNav";
+import SubNav from "@/components/SubNav";
 import { NotionBlockList } from "@/components/notion/NotionBlocks";
 import { ShareButtons } from "@/components/notion/ShareButtons";
 import {
@@ -24,23 +24,21 @@ export default async function ArticleDetailPage({ params }: Props) {
   return (
     <div className="bg-white">
       <Header />
-      <HeaderNav />
-      <article className="px-4 pt-16 pb-16">
-        <h1 className="text-center text-[32px] leading-[40px]">{title}</h1>
-        {publicationDate && (
-          <p className="mt-6 text-center text-sm leading-5">
-            {publicationDate}
-          </p>
-        )}
-        {author && (
-          <p className="mt-6 text-center text-sm leading-5">{author}</p>
-        )}
-        <div className="mt-6 mb-12">
-          <ShareButtons url={articleUrl} title={title} />
-        </div>
-        {/* 本文 */}
-        <div className="article-body">
-          <NotionBlockList blocks={blocks} />
+      <SubNav />
+      <article className="pt-16 pb-16">
+        <div className="w-inner mx-auto max-w-[1128px]">
+          <h1 className="text-heading-lg text-center">{title}</h1>
+          {publicationDate && (
+            <p className="text-body-sm mt-6 text-center">{publicationDate}</p>
+          )}
+          {author && <p className="text-body-sm mt-6 text-center">{author}</p>}
+          <div className="mt-6 mb-12">
+            <ShareButtons url={articleUrl} title={title} />
+          </div>
+          {/* 本文 */}
+          <div className="article-body">
+            <NotionBlockList blocks={blocks} />
+          </div>
         </div>
       </article>
     </div>

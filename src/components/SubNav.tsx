@@ -12,7 +12,7 @@ const navLinks = [
   { label: "生徒作品", href: "#" },
 ];
 
-export default function HeaderNav() {
+export default function SubNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -49,7 +49,7 @@ export default function HeaderNav() {
         </Link>
         <nav
           className={cn(
-            "absolute top-12 right-0 left-0 grid bg-white transition-[grid-template-rows] lg:static",
+            "absolute top-12 right-0 left-0 grid bg-white transition-[grid-template-rows] lg:static lg:block",
             isMenuOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
           )}
         >
@@ -61,7 +61,7 @@ export default function HeaderNav() {
               >
                 <Link
                   href={navLink.href}
-                  className="block py-3.5 pl-12 text-[14px] leading-[20px] lg:p-0 lg:text-[12px] lg:leading-[18px]"
+                  className="text-body-sm lg:text-label-sm block py-3.5 pl-12 lg:p-0"
                 >
                   {navLink.label}
                 </Link>

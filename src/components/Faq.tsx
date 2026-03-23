@@ -26,8 +26,8 @@ const faqItems = [
 export default function Faq() {
   return (
     <section>
-      <div className="mx-4">
-        <h2 className="text-center text-[32px] leading-[40px]">FAQ</h2>
+      <div className="w-inner mx-auto max-w-[1128px]">
+        <h2 className="text-heading-lg text-center">FAQ</h2>
         <div className="mt-8">
           {faqItems.map((item, i) => (
             <details
@@ -38,7 +38,7 @@ export default function Faq() {
               )}
             >
               <summary className="grid w-full grid-cols-[1fr_19px] place-items-stretch gap-4 text-left">
-                <p className="text-[16px] leading-[26px]">{item.q}</p>
+                <p className="text-body">{item.q}</p>
                 <span className="relative ml-[9px] grid place-items-center">
                   {[
                     {
@@ -52,15 +52,17 @@ export default function Faq() {
                   ].map((rot, j) => (
                     <span
                       key={j}
-                      className={`absolute h-px w-2.5 origin-[0.5px_50%] rounded-full bg-black transition-transform ${rot.closed} ${rot.open}`}
+                      className={cn(
+                        "absolute h-px w-2.5 origin-[0.5px_50%] rounded-full bg-black transition-transform",
+                        rot.closed,
+                        rot.open,
+                      )}
                     />
                   ))}
                 </span>
               </summary>
               <div className="overflow-hidden">
-                <p className="min-h-0 py-4 pr-8 text-[16px] leading-[26px]">
-                  {item.a}
-                </p>
+                <p className="text-body min-h-0 py-4 pr-8">{item.a}</p>
               </div>
             </details>
           ))}

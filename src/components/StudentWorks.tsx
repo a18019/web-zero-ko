@@ -11,14 +11,14 @@ const works = [
 export default function StudentWorks() {
   return (
     <section>
-      <div className="mx-4">
-        <h2 className="text-center text-[32px] leading-[40px]">生徒作品</h2>
+      <div className="w-inner mx-auto max-w-[1128px]">
+        <h2 className="text-heading-lg text-center">生徒作品</h2>
         <fieldset className="mt-12 flex items-center gap-2">
           <legend className="sr-only">生徒作品カテゴリ</legend>
           {worksTabItems.map((tab, i) => (
             <label
               key={tab}
-              className="flex h-12 flex-1 cursor-pointer items-center justify-center rounded-full border border-black text-[20px] leading-[28px] text-black has-checked:bg-black has-checked:text-white"
+              className="text-heading-sm flex h-12 flex-1 cursor-pointer items-center justify-center rounded-full border border-black text-black has-checked:bg-black has-checked:text-white"
             >
               <input
                 type="radio"
@@ -41,7 +41,7 @@ export default function StudentWorks() {
                 height={186}
                 className="aspect-328/186 w-full object-cover"
               />
-              <p className="text-[16px] leading-[26px]">{work.title}</p>
+              <p className="text-body">{work.title}</p>
             </div>
           ))}
         </div>

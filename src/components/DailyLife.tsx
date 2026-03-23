@@ -14,8 +14,8 @@ export default async function DailyLife() {
 
   return (
     <section>
-      <div className="mx-4">
-        <h2 className="text-center text-[32px] leading-[40px]">ゼロ高日常</h2>
+      <div className="w-inner mx-auto max-w-[1128px]">
+        <h2 className="text-heading-lg text-center">ゼロ高日常</h2>
         <div className="mt-12 flex flex-col gap-8">
           {articles.map((page) => (
             <Link
@@ -23,13 +23,9 @@ export default async function DailyLife() {
               href={`/articles/${page.id}`}
               className="grid grid-cols-[1fr_80px] items-center gap-4"
             >
-              <div className="flex w-[232px] flex-col gap-2">
-                <p className="line-clamp-2 text-[16px] leading-[26px]">
-                  {getTitle(page)}
-                </p>
-                <p className="text-[14px] leading-[20px]">
-                  {getPublicationDate(page)}
-                </p>
+              <div className="flex flex-col gap-2">
+                <p className="text-body line-clamp-2">{getTitle(page)}</p>
+                <p className="text-body-sm">{getPublicationDate(page)}</p>
               </div>
               <Image
                 src={getThumbnailUrl(page)}

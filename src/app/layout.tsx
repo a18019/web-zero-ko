@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans_JP, Roboto } from "next/font/google";
+import { cn } from "@/lib/utils";
 import "./globals.css";
 
 const notoSansJp = Noto_Sans_JP({
@@ -25,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body className={`${roboto.variable} ${notoSansJp.variable} antialiased`}>
+      <body className={cn(roboto.variable, notoSansJp.variable, "antialiased")}>
         {children}
       </body>
     </html>
