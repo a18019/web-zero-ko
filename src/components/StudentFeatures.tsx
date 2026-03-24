@@ -36,7 +36,9 @@ export default function StudentFeatures() {
   return (
     <section>
       <div className="w-inner mx-auto max-w-[1128px]">
-        <h2 className="text-heading-lg text-center">生徒特集</h2>
+        <h2 className="text-heading-lg lg:text-display text-center">
+          生徒特集
+        </h2>
         <div className="-mx-4 mt-12 overflow-hidden">
           <ul className="relative flex snap-x snap-mandatory scroll-pl-8 gap-4 overflow-x-scroll px-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {studentFeatures.map((feature, i) => (

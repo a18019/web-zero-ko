@@ -37,7 +37,7 @@
   --text-display: 48px;
   --text-display--line-height: 56px;
 
-  --width-inner: calc(20/27 * (100vw-360px)+328px);
+  --width-inner: calc(20 / 27 * (100vw - 360px) + 328px);
 }
 
 body {

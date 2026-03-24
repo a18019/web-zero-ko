@@ -12,8 +12,10 @@ export default function StudentWorks() {
   return (
     <section>
       <div className="w-inner mx-auto max-w-[1128px]">
-        <h2 className="text-heading-lg text-center">生徒作品</h2>
-        <fieldset className="mt-12 flex items-center gap-2">
+        <h2 className="text-heading-lg lg:text-display text-center">
+          生徒作品
+        </h2>
+        <fieldset className="mx-auto mt-12 flex max-w-[552px] gap-2 lg:mt-16">
           <legend className="sr-only">生徒作品カテゴリ</legend>
           {worksTabItems.map((tab, i) => (
             <label
@@ -31,7 +33,7 @@ export default function StudentWorks() {
             </label>
           ))}
         </fieldset>
-        <div className="mt-8 flex flex-col gap-6">
+        <div className="lg:mt:12 mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
           {works.map((work, i) => (
             <div key={i} className="flex flex-col gap-2">
               <Image

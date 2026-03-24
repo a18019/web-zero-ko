@@ -14,9 +14,11 @@ export default async function DailyLife() {
 
   return (
     <section>
-      <div className="w-inner mx-auto max-w-[1128px]">
-        <h2 className="text-heading-lg text-center">ゼロ高日常</h2>
-        <div className="mt-12 flex flex-col gap-8">
+      <div className="w-inner mx-auto max-w-[552px]">
+        <h2 className="text-heading-lg lg:text-display text-center">
+          ゼロ高日常
+        </h2>
+        <div className="mt-12 flex flex-col gap-8 lg:gap-12">
           {articles.map((page) => (
             <Link
               key={page.id}
@@ -24,7 +26,9 @@ export default async function DailyLife() {
               className="grid grid-cols-[1fr_80px] items-center gap-4"
             >
               <div className="flex flex-col gap-2">
-                <p className="text-body line-clamp-2">{getTitle(page)}</p>
+                <p className="text-body lg:text-heading-sm line-clamp-2 lg:line-clamp-1">
+                  {getTitle(page)}
+                </p>
                 <p className="text-body-sm">{getPublicationDate(page)}</p>
               </div>
               <Image

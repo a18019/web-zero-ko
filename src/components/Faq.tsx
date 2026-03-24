@@ -26,9 +26,9 @@ const faqItems = [
 export default function Faq() {
   return (
     <section>
-      <div className="w-inner mx-auto max-w-[1128px]">
-        <h2 className="text-heading-lg text-center">FAQ</h2>
-        <div className="mt-8">
+      <div className="w-inner mx-auto max-w-[744px]">
+        <h2 className="text-heading-lg lg:text-display text-center">FAQ</h2>
+        <div className="lg:mt12 mt-8">
           {faqItems.map((item, i) => (
             <details
               key={i}
