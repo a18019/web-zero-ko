@@ -3,6 +3,7 @@ import type {
   BlockObjectResponse,
   PageObjectResponse,
 } from "@notionhq/client/build/src/api-endpoints";
+import { cache } from "react";
 
 export const notion = new Client({
   auth: process.env.NOTION_API_KEY,
@@ -48,7 +49,11 @@ export function getThumbnailUrl(
   return fallback;
 }
 
+let cachedDataSourceId: string | undefined;
+
 async function getDataSourceId(): Promise<string> {
+  if (cachedDataSourceId) return cachedDataSourceId;
+
   const database = await notion.databases.retrieve({
     database_id: databaseId,
   });
@@ -59,28 +64,22 @@ async function getDataSourceId(): Promise<string> {
   if (!dataSourceId) {
     throw new Error("Notion data source が見つかりません。");
   }
+  cachedDataSourceId = dataSourceId;
   return dataSourceId;
 }
 
-export async function fetchPages(): Promise<PageObjectResponse[]> {
-  const dataSourceId = await getDataSourceId();
+export const fetchPages = cache(
+  async (pageSize = 10): Promise<PageObjectResponse[]> => {
+    const dataSourceId = await getDataSourceId();
 
-  const pages: PageObjectResponse[] = [];
-  let cursor: string | undefined;
-
-  do {
     const response = await notion.dataSources.query({
       data_source_id: dataSourceId,
-      start_cursor: cursor,
+      page_size: pageSize,
     });
 
-    pages.push(...response.results.filter(isPage));
-
-    cursor = response.next_cursor ?? undefined;
-  } while (cursor);
-
-  return pages;
-}
+    return response.results.filter(isPage);
+  },
+);
 
 export function getEventTitle(page: PageObjectResponse, fallback = ""): string {
   const prop = page.properties.eventTitle;
@@ -191,15 +190,16 @@ export async function fetchBlocksWithChildren(
       start_cursor: cursor,
     });
 
-    for (const block of response.results) {
-      const b = block as BlockObjectResponse;
-      blocks.push({
+    const rawBlocks = response.results as BlockObjectResponse[];
+    const withChildren = await Promise.all(
+      rawBlocks.map(async (b) => ({
         ...b,
         ...(b.has_children && {
           children: await fetchBlocksWithChildren(b.id),
         }),
-      });
-    }
+      })),
+    );
+    blocks.push(...withChildren);
 
     cursor = response.next_cursor ?? undefined;
   } while (cursor);

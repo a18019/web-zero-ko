@@ -55,23 +55,23 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
 
     case "heading_1":
       return (
-        <h2 className="text-heading-sm mt-12 mb-6 font-bold">
+        <h1 className="text-heading-sm mt-12 mb-6 lg:mt-16">
           <RichText items={block.heading_1.rich_text} />
-        </h2>
+        </h1>
       );
 
     case "heading_2":
       return (
-        <h3 className="text-body-lg mt-8 mb-4 font-bold">
+        <h2 className="text-heading-sm mt-12 mb-6 lg:mt-16">
           <RichText items={block.heading_2.rich_text} />
-        </h3>
+        </h2>
       );
 
     case "heading_3":
       return (
-        <h4 className="text-body mt-6 mb-3 font-bold">
+        <h3 className="text-heading-sm mt-12 mb-6 lg:mt-16">
           <RichText items={block.heading_3.rich_text} />
-        </h4>
+        </h3>
       );
 
     case "bulleted_list_item":

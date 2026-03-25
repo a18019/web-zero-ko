@@ -13,20 +13,21 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function ArticlesPage() {
-  const allPages = await fetchPages();
-  const pages = allPages.slice(0, 10);
+  const pages = await fetchPages(6);
 
   return (
     <>
       <Header />
       <SubNav />
-      <section className="pt-16 pb-20">
+      <section className="pt-16 pb-20 lg:pt-24 lg:pb-40">
         <div className="w-inner mx-auto max-w-[1128px]">
-          <h1 className="text-heading-lg text-center font-bold">ニュース</h1>
-          <p className="text-body mt-4 text-center">
+          <h1 className="text-heading-lg lg:text-display text-center font-bold">
+            ニュース
+          </h1>
+          <p className="text-body mt-4 text-center lg:mt-6">
             ゼロ高等学院の最新ニュースをお届けします
           </p>
-          <div className="mt-16 flex flex-col gap-12">
+          <div className="mt-16 grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-x-6 gap-y-12 lg:mt-32">
             {pages.map((page) => {
               const thumbnail = getThumbnailUrl(page);
               return (
@@ -44,7 +45,9 @@ export default async function ArticlesPage() {
                   />
                   <div className="flex flex-col gap-4">
                     <p className="text-body-sm">{getCategory(page)}</p>
-                    <p className="text-heading-sm">{getTitle(page)}</p>
+                    <p className="text-heading-sm line-clamp-3">
+                      {getTitle(page)}
+                    </p>
                     <p className="text-label-sm">{getPublicationDate(page)}</p>
                   </div>
                 </Link>

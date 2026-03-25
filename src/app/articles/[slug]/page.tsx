@@ -25,8 +25,8 @@ export default async function ArticleDetailPage({ params }: Props) {
     <div className="bg-white">
       <Header />
       <SubNav />
-      <article className="pt-16 pb-16">
-        <div className="w-inner mx-auto max-w-[1128px]">
+      <article className="pt-16 pb-16 lg:pt-24">
+        <div className="w-inner mx-auto max-w-[552px]">
           <h1 className="text-heading-lg text-center">{title}</h1>
           {publicationDate && (
             <p className="text-body-sm mt-6 text-center">{publicationDate}</p>

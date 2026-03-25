@@ -8,7 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default async function FeaturedContent() {
-  const pages = await fetchPages();
+  const pages = await fetchPages(4);
 
   return (
     <section>
