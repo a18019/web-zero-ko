@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
-import { Noto_Sans_JP, Roboto } from "next/font/google";
 import { cn } from "@/lib/utils";
+import type { Metadata } from "next";
+import { BIZ_UDPGothic, Inter } from "next/font/google";
 import "./globals.css";
 
-const notoSansJp = Noto_Sans_JP({
-  variable: "--font-noto-sans-jp",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const roboto = Roboto({
-  variable: "--font-roboto",
+const bizUdGothic = BIZ_UDPGothic({
+  variable: "--font-biz-udp-gothic",
+  weight: ["400", "700"],
   subsets: ["latin"],
 });
 
@@ -25,10 +26,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
-      <body className={cn(roboto.variable, notoSansJp.variable, "antialiased")}>
-        {children}
-      </body>
+    <html lang="ja" className={cn(inter.variable, bizUdGothic.variable)}>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
