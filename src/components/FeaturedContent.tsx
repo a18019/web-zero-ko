@@ -11,21 +11,21 @@ const articles = [
   },
   {
     image: "/no-image.png",
-    href: "",
+    href: "https://www.zero-ko.com/graduate-haori/",
     title:
       "経験、失敗は最大の学び！今、高校生だからこそやるべきこと ─ この時間を最大限楽しむ ゼロ高4期生 羽織みみさん ─",
     category: "ストーリー",
   },
   {
     image: "/no-image.png",
-    href: "",
+    href: "https://www.zero-ko.com/overseas-challenge/",
     title:
       "「高校生から世界へ！」カンボジア・ハワイ・韓国…3人のゼロ高生が海外で得た学びとは？",
     category: "インタビュー",
   },
   {
     image: "/no-image.png",
-    href: "",
+    href: "https://www.zero-ko.com/time-management/",
     title:
       "ストリートダンス全国優勝のゼロ高生が語る！手帳で自由時間を最大限活用する方法",
     category: "シンキング",
