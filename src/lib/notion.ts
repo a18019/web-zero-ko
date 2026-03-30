@@ -81,34 +81,6 @@ export const fetchPages = cache(
   },
 );
 
-export function getEventTitle(page: PageObjectResponse, fallback = ""): string {
-  const prop = page.properties.eventTitle;
-  if (prop?.type === "rich_text") {
-    return prop.rich_text[0]?.plain_text ?? fallback;
-  }
-  return fallback;
-}
-
-function formatDate(iso: string): string {
-  return iso.split("T")[0].replaceAll("-", "/");
-}
-
-export function getEventDate(page: PageObjectResponse): {
-  display: string;
-  start: string;
-  end: string | null;
-} {
-  const prop = page.properties.eventDate;
-  if (prop?.type === "date" && prop.date) {
-    const { start, end } = prop.date;
-    const display = end
-      ? `${formatDate(start)} - ${formatDate(end)}`
-      : formatDate(start);
-    return { display, start, end: end ?? null };
-  }
-  return { display: "", start: "", end: null };
-}
-
 export function getAuthor(page: PageObjectResponse, fallback = ""): string {
   const prop = page.properties.author;
   if (prop?.type === "rich_text") {
@@ -143,31 +115,6 @@ export async function fetchDailyLifeArticles(): Promise<PageObjectResponse[]> {
   });
 
   return response.results.filter(isPage);
-}
-
-export async function fetchEvents(): Promise<PageObjectResponse[]> {
-  const dataSourceId = await getDataSourceId();
-  const today = new Date().toISOString().split("T")[0];
-
-  const response = await notion.dataSources.query({
-    data_source_id: dataSourceId,
-    filter: {
-      property: "category",
-      select: { equals: "event" },
-    },
-    sorts: [{ property: "eventDate", direction: "ascending" }],
-    page_size: 10,
-  });
-
-  const pages = response.results.filter(isPage);
-
-  return pages
-    .filter((page) => {
-      const { start, end } = getEventDate(page);
-      if (!start) return false;
-      return (end ?? start) >= today;
-    })
-    .slice(0, 3);
 }
 
 export async function fetchPageWithBlocks(pageId: string) {

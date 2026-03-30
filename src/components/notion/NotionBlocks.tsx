@@ -48,28 +48,28 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
   switch (block.type) {
     case "paragraph":
       return (
-        <p className="text-body mb-6">
+        <p className="mb-6 text-[16px]">
           <RichText items={block.paragraph.rich_text} />
         </p>
       );
 
     case "heading_1":
       return (
-        <h1 className="text-heading-sm mt-12 mb-6 lg:mt-16">
+        <h1 className="mt-12 mb-6 text-[20px] lg:mt-16">
           <RichText items={block.heading_1.rich_text} />
         </h1>
       );
 
     case "heading_2":
       return (
-        <h2 className="text-heading-sm mt-12 mb-6 lg:mt-16">
+        <h2 className="mt-12 mb-6 text-[20px] lg:mt-16">
           <RichText items={block.heading_2.rich_text} />
         </h2>
       );
 
     case "heading_3":
       return (
-        <h3 className="text-heading-sm mt-12 mb-6 lg:mt-16">
+        <h3 className="mt-12 mb-6 text-[20px] lg:mt-16">
           <RichText items={block.heading_3.rich_text} />
         </h3>
       );
@@ -131,9 +131,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
 
       return (
         <div className="flex gap-3 rounded-lg bg-gray-50 p-4">
-          {iconDisplay && (
-            <span className="text-heading-sm">{iconDisplay}</span>
-          )}
+          {iconDisplay && <span className="text-[20px]">{iconDisplay}</span>}
           <div className="flex-1">
             <RichText items={block.callout.rich_text} />
             <ChildBlocks block={block} className="mt-2" />
@@ -147,14 +145,14 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
 
       return (
         <div className="overflow-hidden rounded-lg border">
-          <div className="text-label-sm bg-gray-100 px-4 py-1.5 text-gray-500">
+          <div className="bg-gray-100 px-4 py-1.5 text-[12px] text-gray-500">
             {block.code.language}
           </div>
           <pre className="overflow-x-auto bg-gray-50 p-4">
-            <code className="text-body-sm font-mono">{codeText}</code>
+            <code className="font-mono text-[14px]">{codeText}</code>
           </pre>
           {block.code.caption.length > 0 && (
-            <div className="text-body-sm px-4 py-1.5 text-gray-500">
+            <div className="px-4 py-1.5 text-[14px] text-gray-500">
               <RichText items={block.code.caption} />
             </div>
           )}
@@ -178,7 +176,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
             className="w-full"
           />
           {caption.length > 0 && (
-            <figcaption className="text-body-sm mt-2 text-center text-gray-500">
+            <figcaption className="mt-2 text-center text-[14px] text-gray-500">
               <RichText items={caption} />
             </figcaption>
           )}
@@ -204,7 +202,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
             <video src={videoUrl} controls className="max-w-full rounded" />
           )}
           {videoCaption.length > 0 && (
-            <figcaption className="text-body-sm mt-2 text-center text-gray-500">
+            <figcaption className="mt-2 text-center text-[14px] text-gray-500">
               <RichText items={videoCaption} />
             </figcaption>
           )}
@@ -235,7 +233,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
             📎 {fileName}
           </a>
           {fileCaption.length > 0 && (
-            <p className="text-body-sm mt-1 text-gray-500">
+            <p className="mt-1 text-[14px] text-gray-500">
               <RichText items={fileCaption} />
             </p>
           )}
@@ -255,7 +253,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
             className="h-[600px] w-full rounded border"
           />
           {pdfCaption.length > 0 && (
-            <figcaption className="text-body-sm mt-2 text-center text-gray-500">
+            <figcaption className="mt-2 text-center text-[14px] text-gray-500">
               <RichText items={pdfCaption} />
             </figcaption>
           )}
@@ -275,7 +273,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
             {block.bookmark.url}
           </a>
           {block.bookmark.caption.length > 0 && (
-            <p className="text-body-sm mt-1 text-gray-500">
+            <p className="mt-1 text-[14px] text-gray-500">
               <RichText items={block.bookmark.caption} />
             </p>
           )}
@@ -435,7 +433,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
 
     case "unsupported":
       return (
-        <div className="text-body-sm rounded bg-gray-50 p-3 text-gray-400">
+        <div className="rounded bg-gray-50 p-3 text-[14px] text-gray-400">
           未対応ブロック ({block.unsupported.block_type})
         </div>
       );

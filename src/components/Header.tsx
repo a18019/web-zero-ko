@@ -15,7 +15,7 @@ const mobileNavLinks = [
 
 export default function Header() {
   return (
-    <header className="bg-white">
+    <header className="bg-surface">
       <div className="group mx-auto grid h-12 max-w-[1128px] grid-cols-[48px_48px_1fr] items-center lg:grid-cols-[48px_1fr_auto]">
         <label className="z-header-toggle relative grid h-full place-items-center lg:hidden">
           <input type="checkbox" className="sr-only" />
@@ -27,7 +27,7 @@ export default function Header() {
             <span
               key={i}
               className={cn(
-                "absolute h-px w-6 rounded-full bg-black",
+                "bg-foreground absolute h-px w-6 rounded-full",
                 className,
               )}
             />
@@ -43,7 +43,7 @@ export default function Header() {
         </a>
         <nav
           className={cn(
-            "z-header-menu fixed inset-0 hidden overflow-y-scroll bg-white [clip-path:inset(0_0_100%_0)]",
+            "z-header-menu bg-surface fixed inset-0 hidden overflow-y-scroll [clip-path:inset(0_0_100%_0)]",
             "lg:static lg:block lg:[clip-path:none]",
             "[transition:clip-path_150ms,display_150ms_allow-discrete]",
             "group-has-checked:block group-has-checked:[clip-path:inset(0_0_0_0)] starting:group-has-checked:[clip-path:inset(0_0_100%_0)]",
@@ -53,7 +53,7 @@ export default function Header() {
             {mobileNavLinks.map((navLink) => (
               <li key={navLink.label}>
                 <a
-                  className="text-body-sm lg:text-label-sm block py-3.5 pl-12 lg:p-0"
+                  className="block py-3.5 pl-12 text-[14px] lg:p-0 lg:text-[12px]"
                   href={navLink.href}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -68,7 +68,7 @@ export default function Header() {
           href="https://www.zero-ko.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-label-sm mr-4 ml-auto grid h-6 place-items-center rounded-full bg-black px-2.5 text-white"
+          className="bg-foreground mr-4 ml-auto grid h-6 place-items-center rounded-full px-2.5 text-[12px] text-white"
         >
           公式サイトへ
         </a>

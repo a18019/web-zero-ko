@@ -8,7 +8,7 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const bizUdGothic = BIZ_UDPGothic({
+const bizUdpGothic = BIZ_UDPGothic({
   variable: "--font-biz-udp-gothic",
   weight: ["400", "700"],
   subsets: ["latin"],
@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja" className={cn(inter.variable, bizUdGothic.variable)}>
+    <html lang="ja" className={cn(inter.variable, bizUdpGothic.variable)}>
       <body className="antialiased">{children}</body>
     </html>
   );

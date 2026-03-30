@@ -27,11 +27,11 @@ export default async function ArticleDetailPage({ params }: Props) {
       <SubNav />
       <article className="pt-16 pb-16 lg:pt-24">
         <div className="w-inner mx-auto max-w-[552px]">
-          <h1 className="text-heading-lg text-center">{title}</h1>
+          <h1 className="text-[32px]">{title}</h1>
           {publicationDate && (
-            <p className="text-body-sm mt-6 text-center">{publicationDate}</p>
+            <p className="mt-6 text-center text-[14px]">{publicationDate}</p>
           )}
-          {author && <p className="text-body-sm mt-6 text-center">{author}</p>}
+          {author && <p className="mt-6 text-center text-[14px]">{author}</p>}
           <div className="mt-6 mb-12">
             <ShareButtons url={articleUrl} title={title} />
           </div>

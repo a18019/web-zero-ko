@@ -1,51 +1,74 @@
-import {
-  fetchPages,
-  getCategory,
-  getThumbnailUrl,
-  getTitle,
-} from "@/lib/notion";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function FeaturedContent() {
-  const pages = await fetchPages(4);
+const articles = [
+  {
+    image: "/no-image.png",
+    href: "https://www.zero-ko.com/graduate_story_kawahara/",
+    title:
+      "挑戦を応援してくれる人がいる ─ ゼロ高は、ゼロをイチにするのに最適な場所ゼロ高2期生 河原晴馬さん ─",
+    category: "ストーリー",
+  },
+  {
+    image: "/no-image.png",
+    href: "",
+    title:
+      "経験、失敗は最大の学び！今、高校生だからこそやるべきこと ─ この時間を最大限楽しむ ゼロ高4期生 羽織みみさん ─",
+    category: "ストーリー",
+  },
+  {
+    image: "/no-image.png",
+    href: "",
+    title:
+      "「高校生から世界へ！」カンボジア・ハワイ・韓国…3人のゼロ高生が海外で得た学びとは？",
+    category: "インタビュー",
+  },
+  {
+    image: "/no-image.png",
+    href: "",
+    title:
+      "ストリートダンス全国優勝のゼロ高生が語る！手帳で自由時間を最大限活用する方法",
+    category: "シンキング",
+  },
+];
 
+export default async function FeaturedContent() {
   return (
     <section>
       <div className="w-inner mx-auto grid max-w-[1128px] grid-cols-[1fr] gap-6 lg:grid-cols-[1fr_1fr]">
-        {pages[0] && (
+        {articles[0] && (
           <Link
-            href={`/articles/${pages[0].id}`}
-            className="flex flex-col overflow-hidden rounded-3xl border border-black"
+            href={articles[0].href || "#"}
+            className="border-muted flex flex-col overflow-hidden rounded-3xl border"
           >
             <Image
-              src={getThumbnailUrl(pages[0])}
+              src={articles[0].image}
               alt=""
               width={328}
               height={219}
               className="aspect-328/219 w-full rounded-b-[23px] object-cover"
             />
             <div className="flex flex-1 flex-col justify-around px-6 pt-6 pb-8 lg:px-8 lg:pt-12 lg:pb-16">
-              <p className="text-body-sm">{getCategory(pages[0])}</p>
-              <p className="text-heading-sm mt-4">{getTitle(pages[0])}</p>
+              <p className="text-[14px]">{articles[0].category}</p>
+              <p className="mt-4 line-clamp-3 text-[20px]">
+                {articles[0].title}
+              </p>
             </div>
           </Link>
         )}
         <div className="flex flex-col gap-4">
-          <p className="text-body-sm border-b border-black pb-1">
-            注目のコンテンツ
-          </p>
+          <p className="text-[14px]">注目のコンテンツ</p>
           <div className="flex flex-1 flex-col justify-end gap-6">
-            {pages.slice(1, 4).map((page) => (
+            {articles.slice(1, 4).map((article, i) => (
               <Link
-                key={page.id}
-                href={`/articles/${page.id}`}
-                className="overflow-hidden rounded-3xl border border-black px-6 pt-6 pb-8"
+                key={i}
+                href={article.href || "#"}
+                className={`border-muted overflow-hidden rounded-3xl border px-6 pt-6 pb-8 ${i === 1 ? "bg-surface" : ""}`}
               >
                 <div>
-                  <p className="text-body-sm">{getCategory(page)}</p>
-                  <p className="text-heading-sm mt-4 line-clamp-3">
-                    {getTitle(page)}
+                  <p className="text-[14px]">{article.category}</p>
+                  <p className="mt-4 line-clamp-3 text-[20px]">
+                    {article.title}
                   </p>
                 </div>
               </Link>

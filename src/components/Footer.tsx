@@ -2,28 +2,45 @@ import Image from "next/image";
 import Link from "next/link";
 
 const socialLinks = [
-  { label: "X", href: "#", icon: "/x.svg" },
-  { label: "Instagram", href: "#", icon: "/instagram.svg" },
-  { label: "YouTube", href: "#", icon: "/youtube.svg" },
-  { label: "Facebook", href: "#", icon: "/facebook.svg" },
+  { label: "X", href: "https://x.com/zero_highschool/", icon: "/x.svg" },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/zero_highschool_official",
+    icon: "/instagram.svg",
+  },
+  {
+    label: "YouTube",
+    href: "https://www.youtube.com/channel/UCi89abQwUMkMqi41aFbsHdA",
+    icon: "/youtube.svg",
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/zerokofacebook/?locale=ja_JP",
+    icon: "/facebook.svg",
+  },
   { label: "LINE", href: "#", icon: "/line.svg" },
 ];
 
 const footerLinks = [
-  { label: "プライバシーポリシー", href: "#" },
-  { label: "お問い合わせ", href: "#" },
+  {
+    label: "プライバシーポリシー",
+    href: "https://www.zero-ko.com/privacy-policy/",
+  },
+  { label: "お問い合わせ", href: "https://www.zero-ko.com/contact/" },
 ];
 
 export default function Footer() {
   return (
-    <footer className="border-t border-black py-4 lg:py-2">
+    <footer className="bg-surface py-4 lg:py-2">
       <div className="w-inner mx-auto grid max-w-[1128px] grid-cols-1 grid-rows-3 items-center gap-6 lg:grid-cols-[1fr_auto_auto] lg:grid-rows-1">
         <nav>
           <ul className="-ml-4 flex">
             {socialLinks.map((socialLink) => (
               <li key={socialLink.label}>
-                <Link
+                <a
                   href={socialLink.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="grid size-12 place-items-center"
                 >
                   <Image
@@ -32,7 +49,7 @@ export default function Footer() {
                     width={16}
                     height={16}
                   />
-                </Link>
+                </a>
               </li>
             ))}
           </ul>
@@ -41,14 +58,19 @@ export default function Footer() {
           <ul className="flex gap-8">
             {footerLinks.map((footerLink) => (
               <li key={footerLink.label} className="grid place-items-center">
-                <Link href={footerLink.href} className="text-xs">
+                <Link
+                  href={footerLink.href}
+                  className="text-[12px]"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {footerLink.label}
                 </Link>
               </li>
             ))}
           </ul>
         </nav>
-        <small className="text-xs">© Zero Education & Arts.</small>
+        <small className="text-[12px]">© Zero Education & Arts.</small>
       </div>
     </footer>
   );

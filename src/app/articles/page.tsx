@@ -21,10 +21,8 @@ export default async function ArticlesPage() {
       <SubNav />
       <section className="pt-16 pb-20 lg:pt-24 lg:pb-40">
         <div className="w-inner mx-auto max-w-[1128px]">
-          <h1 className="text-heading-lg lg:text-display text-center font-bold">
-            ニュース
-          </h1>
-          <p className="text-body mt-4 text-center lg:mt-6">
+          <h1 className="text-[32px] font-bold lg:text-[48px]">ニュース</h1>
+          <p className="mt-4 text-center text-[16px] lg:mt-6">
             ゼロ高等学院の最新ニュースをお届けします
           </p>
           <div className="mt-16 grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-x-6 gap-y-12 lg:mt-32">
@@ -34,7 +32,7 @@ export default async function ArticlesPage() {
                 <Link
                   key={page.id}
                   href={`/articles/${page.id}`}
-                  className="flex flex-col gap-6 rounded-[24px] border border-black p-6"
+                  className="border-muted flex flex-col gap-6 rounded-[24px] border p-6"
                 >
                   <Image
                     src={thumbnail || "/demo-image.png"}
@@ -44,11 +42,9 @@ export default async function ArticlesPage() {
                     className="aspect-328/184 w-full object-cover"
                   />
                   <div className="flex flex-col gap-4">
-                    <p className="text-body-sm">{getCategory(page)}</p>
-                    <p className="text-heading-sm line-clamp-3">
-                      {getTitle(page)}
-                    </p>
-                    <p className="text-label-sm">{getPublicationDate(page)}</p>
+                    <p className="text-[14px]">{getCategory(page)}</p>
+                    <p className="line-clamp-3 text-[20px]">{getTitle(page)}</p>
+                    <p className="text-[12px]">{getPublicationDate(page)}</p>
                   </div>
                 </Link>
               );

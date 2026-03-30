@@ -2,9 +2,11 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-  --color-muted: #d9d9d9;
-  --color-text-secondary: #222222;
+  --foreground: #1b1c1f;
+  --color-surface: #f5f5f8;
+  --color-muted: #717581;
+  --color-accent-navy: #00124f;
+  --color-accent-lime: #e7ff00;
 }
 
 @theme inline {
@@ -12,36 +14,20 @@
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--color-surface);
   --color-muted: var(--color-muted);
-  --color-text-secondary: var(--color-text-secondary);
+  --color-accent-navy: var(--color-accent-navy);
+  --color-accent-lime: var(--color-accent-lime);
 
   --z-index-header-toggle: 8;
   --z-index-header-menu: 7;
   --z-index-subnav: 4;
 
-  --text-micro: 10px;
-  --text-micro--line-height: 14px;
-  --text-label-sm: 12px;
-  --text-label-sm--line-height: 18px;
-  --text-body-sm: 14px;
-  --text-body-sm--line-height: 20px;
-  --text-body: 16px;
-  --text-body--line-height: 26px;
-  --text-body-lg: 18px;
-  --text-body-lg--line-height: 28px;
-  --text-heading-sm: 20px;
-  --text-heading-sm--line-height: 28px;
-  --text-heading: 24px;
-  --text-heading--line-height: 36px;
-  --text-heading-lg: 32px;
-  --text-heading-lg--line-height: 40px;
-  --text-display: 48px;
-  --text-display--line-height: 56px;
-
   --width-inner: calc(20 / 27 * (100vw - 360px) + 328px);
 }
 
 body {
+  @apply leading-[1.6];
   background: var(--background);
   color: var(--foreground);
 }
