@@ -15,7 +15,7 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
   };
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex gap-2">
       <a
         href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
         target="_blank"

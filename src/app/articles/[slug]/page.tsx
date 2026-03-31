@@ -1,5 +1,3 @@
-import Header from "@/components/Header";
-import SubNav from "@/components/SubNav";
 import { NotionBlockList } from "@/components/notion/NotionBlocks";
 import { ShareButtons } from "@/components/notion/ShareButtons";
 import {
@@ -8,6 +6,8 @@ import {
   getPublicationDate,
   getTitle,
 } from "@/lib/notion";
+
+export const revalidate = 30;
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -22,16 +22,14 @@ export default async function ArticleDetailPage({ params }: Props) {
   const articleUrl = `https://students.zero-ko.com/articles/${slug}`;
 
   return (
-    <div className="bg-white">
-      <Header />
-      <SubNav />
-      <article className="pt-16 pb-16 lg:pt-24">
+    <div className="">
+      <article className="pt-12 pb-16 lg:pt-24">
         <div className="w-inner mx-auto max-w-[552px]">
           <h1 className="text-[32px]">{title}</h1>
           {publicationDate && (
-            <p className="mt-6 text-center text-[14px]">{publicationDate}</p>
+            <p className="mt-6 text-[14px]">{publicationDate}</p>
           )}
-          {author && <p className="mt-6 text-center text-[14px]">{author}</p>}
+          {author && <p className="mt-6 text-[14px]">{author}</p>}
           <div className="mt-6 mb-12">
             <ShareButtons url={articleUrl} title={title} />
           </div>

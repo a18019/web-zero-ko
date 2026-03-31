@@ -21,7 +21,9 @@
 
   --z-index-header-toggle: 8;
   --z-index-header-menu: 7;
-  --z-index-subnav: 4;
+  --z-index-subnav: 5;
+  --z-index-subnav-foreground: 6;
+  --z-index-subnav-menu: 4;
 
   --width-inner: calc(20 / 27 * (100vw - 360px) + 328px);
 }

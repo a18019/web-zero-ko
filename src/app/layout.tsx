@@ -1,3 +1,7 @@
+import Cta from "@/components/Cta";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import SubNav from "@/components/SubNav";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { BIZ_UDPGothic, Inter } from "next/font/google";
@@ -27,7 +31,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className={cn(inter.variable, bizUdpGothic.variable)}>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <Header />
+        <SubNav />
+        {children}
+        <Cta />
+        <Footer />
+      </body>
     </html>
   );
 }

@@ -38,35 +38,37 @@ export default function StudentFeatures() {
     <section>
       <div className="w-inner mx-auto max-w-[1128px]">
         <h2 className="text-[32px] lg:text-[48px]">生徒のメモ</h2>
-        <div className="-mx-4 mt-12 overflow-hidden">
-          <ul className="relative flex snap-x snap-mandatory scroll-pl-8 gap-4 overflow-x-scroll px-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {studentFeatures.map((feature, i) => (
-              <li key={i} className="flex-none snap-start">
-                <Link
-                  href={feature.href}
-                  className="relative block aspect-4/5 w-[296px] overflow-hidden rounded-3xl"
-                >
-                  <Image
-                    src={feature.image}
-                    width={370}
-                    height={370}
-                    alt=""
-                    className="h-full w-full object-cover"
-                  />
-                  <div className="to-foreground/60 absolute right-0 bottom-0 left-0 bg-linear-to-b from-transparent p-6 text-white">
-                    <span className="text-foreground flex-none rounded-full bg-white px-[6px] py-[3px] text-[10px]">
-                      {feature.tag}
-                    </span>
-                    <p className="mt-2 line-clamp-3 text-[24px]">
-                      {feature.title}
-                    </p>
-                    <p className="mt-2 text-[14px]">{feature.date}</p>
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+      </div>
+      <div className="relative mt-12">
+        <button className="absolute"></button>
+        <ul className="flex snap-x snap-mandatory scroll-pl-[calc(7/54*(100vw-360px)+16px)] gap-4 overflow-x-scroll px-[calc(7/54*(100vw-360px)+16px)] [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {studentFeatures.map((feature, i) => (
+            <li key={i} className="flex-none snap-start">
+              <Link
+                href={feature.href}
+                className="relative block aspect-4/5 w-[80vw] max-w-90 overflow-hidden rounded-3xl"
+              >
+                <Image
+                  src={feature.image}
+                  width={370}
+                  height={370}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
+                <div className="to-foreground/60 absolute right-0 bottom-0 left-0 bg-linear-to-b from-transparent p-6 text-white">
+                  <span className="text-foreground flex-none rounded-full bg-white px-[6px] py-[3px] text-[10px]">
+                    {feature.tag}
+                  </span>
+                  <p className="mt-2 line-clamp-3 text-[24px]">
+                    {feature.title}
+                  </p>
+                  <p className="mt-2 text-[14px]">{feature.date}</p>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <button className="absolute"></button>
       </div>
     </section>
   );

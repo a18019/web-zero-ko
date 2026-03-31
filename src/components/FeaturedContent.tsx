@@ -44,9 +44,9 @@ export default async function FeaturedContent() {
             <Image
               src={articles[0].image}
               alt=""
-              width={328}
-              height={219}
-              className="aspect-328/219 w-full rounded-b-[23px] object-cover"
+              width={552}
+              height={311}
+              className="aspect-video w-full object-cover"
             />
             <div className="flex flex-1 flex-col justify-around px-6 pt-6 pb-8 lg:px-8 lg:pt-12 lg:pb-16">
               <p className="text-[14px]">{articles[0].category}</p>
