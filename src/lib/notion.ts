@@ -29,11 +29,27 @@ export function getTitle(
     : fallback;
 }
 
-export function getCategory(page: PageObjectResponse, fallback = ""): string {
+function getRawCategory(page: PageObjectResponse): string | undefined {
   const category = page.properties.category;
-  return category?.type === "select"
-    ? (category.select?.name ?? fallback)
-    : fallback;
+  return category?.type === "select" ? category.select?.name : undefined;
+}
+
+function parseCategoryProp(raw: string): { displayName: string; slug: string } {
+  const idx = raw.indexOf("|");
+  if (idx === -1) return { displayName: raw, slug: raw };
+  return { displayName: raw.slice(0, idx), slug: raw.slice(idx + 1) };
+}
+
+export function getCategory(page: PageObjectResponse, fallback = ""): string {
+  const raw = getRawCategory(page);
+  if (!raw) return fallback;
+  return parseCategoryProp(raw).displayName;
+}
+
+export function getCategorySlug(page: PageObjectResponse): string | undefined {
+  const raw = getRawCategory(page);
+  if (!raw) return undefined;
+  return parseCategoryProp(raw).slug;
 }
 
 export function getThumbnailUrl(
@@ -74,6 +90,11 @@ export const fetchPages = cache(
 
     const response = await notion.dataSources.query({
       data_source_id: dataSourceId,
+      filter: {
+        property: "status",
+        status: { equals: "公開済み" },
+      },
+      sorts: [{ property: "publicationDate", direction: "descending" }],
       page_size: pageSize,
     });
 
@@ -83,8 +104,9 @@ export const fetchPages = cache(
 
 export function getAuthor(page: PageObjectResponse, fallback = ""): string {
   const prop = page.properties.author;
-  if (prop?.type === "rich_text") {
-    return prop.rich_text[0]?.plain_text ?? fallback;
+  if (prop?.type === "people") {
+    const person = prop.people[0];
+    if (person && "name" in person && person.name) return person.name;
   }
   return fallback;
 }
@@ -101,32 +123,120 @@ export function getPublicationDate(
   return fallback;
 }
 
-export async function fetchDailyLifeArticles(): Promise<PageObjectResponse[]> {
+export function getFeatured(page: PageObjectResponse): number | null {
+  const prop = page.properties.featured;
+  if (prop?.type === "number" && prop.number != null) {
+    return prop.number;
+  }
+  return null;
+}
+
+export function getStudentsMemoUrl(
+  page: PageObjectResponse,
+  fallback = "",
+): string {
+  const prop = page.properties.studentsMemo;
+  if (prop?.type === "files") {
+    const file = prop.files[0];
+    if (file?.type === "file") return file.file.url;
+    if (file?.type === "external") return file.external.url;
+  }
+  return fallback;
+}
+
+export const fetchFeaturedPages = cache(
+  async (limit = 4): Promise<PageObjectResponse[]> => {
+    const dataSourceId = await getDataSourceId();
+
+    const response = await notion.dataSources.query({
+      data_source_id: dataSourceId,
+      filter: {
+        and: [
+          { property: "status", status: { equals: "公開済み" } },
+          { property: "featured", number: { is_not_empty: true } },
+        ],
+      },
+      sorts: [
+        { property: "featured", direction: "ascending" },
+        { property: "publicationDate", direction: "descending" },
+      ],
+      page_size: limit,
+    });
+
+    return response.results.filter(isPage);
+  },
+);
+
+export const fetchStudentsMemoPages = cache(
+  async (limit = 4): Promise<PageObjectResponse[]> => {
+    const dataSourceId = await getDataSourceId();
+
+    const response = await notion.dataSources.query({
+      data_source_id: dataSourceId,
+      filter: {
+        and: [
+          { property: "status", status: { equals: "公開済み" } },
+          { property: "studentsMemo", files: { is_not_empty: true } },
+        ],
+      },
+      sorts: [{ property: "publicationDate", direction: "descending" }],
+      page_size: limit,
+    });
+
+    return response.results.filter(isPage);
+  },
+);
+
+export async function fetchPagesByCategory(
+  rawCategory: string,
+  pageSize = 100,
+): Promise<PageObjectResponse[]> {
   const dataSourceId = await getDataSourceId();
 
   const response = await notion.dataSources.query({
     data_source_id: dataSourceId,
     filter: {
-      property: "category",
-      select: { equals: "ゼロ高日常" },
+      and: [
+        { property: "status", status: { equals: "公開済み" } },
+        { property: "category", select: { equals: rawCategory } },
+      ],
     },
     sorts: [{ property: "publicationDate", direction: "descending" }],
-    page_size: 3,
+    page_size: pageSize,
   });
 
   return response.results.filter(isPage);
 }
 
+export type CategoryInfo = { displayName: string; slug: string; raw: string };
+
+export const fetchActiveCategories = cache(
+  async (): Promise<CategoryInfo[]> => {
+    const pages = await fetchPages(100);
+    const seen = new Map<string, CategoryInfo>();
+    for (const page of pages) {
+      const raw = getRawCategory(page);
+      if (raw && !seen.has(raw)) {
+        seen.set(raw, { ...parseCategoryProp(raw), raw });
+      }
+    }
+    return Array.from(seen.values());
+  },
+);
+
 export async function fetchPageWithBlocks(pageId: string) {
-  const page = (await notion.pages.retrieve({
-    page_id: pageId,
-  })) as PageObjectResponse;
+  const result = await notion.pages.retrieve({ page_id: pageId });
+  if (!isPage(result)) {
+    throw new Error(`Page not found: ${pageId}`);
+  }
   const blocks = await fetchBlocksWithChildren(pageId);
-  return { page, blocks };
+  return { page: result, blocks };
 }
 
 export async function fetchBlocksWithChildren(
   blockId: string,
+  maxDepth = 5,
+  _currentDepth = 0,
 ): Promise<BlockWithChildren[]> {
   const blocks: BlockWithChildren[] = [];
   let cursor: string | undefined;
@@ -137,13 +247,20 @@ export async function fetchBlocksWithChildren(
       start_cursor: cursor,
     });
 
-    const rawBlocks = response.results as BlockObjectResponse[];
+    const rawBlocks = response.results.filter(
+      (b): b is BlockObjectResponse => "type" in b,
+    );
     const withChildren = await Promise.all(
       rawBlocks.map(async (b) => ({
         ...b,
-        ...(b.has_children && {
-          children: await fetchBlocksWithChildren(b.id),
-        }),
+        ...(b.has_children &&
+          _currentDepth < maxDepth && {
+            children: await fetchBlocksWithChildren(
+              b.id,
+              maxDepth,
+              _currentDepth + 1,
+            ),
+          }),
       })),
     );
     blocks.push(...withChildren);

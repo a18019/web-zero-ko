@@ -1,3 +1,5 @@
+import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+
 import type { BlockWithChildren } from "@/lib/notion";
 import { cn } from "@/lib/utils";
 
@@ -126,12 +128,31 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
       );
 
     case "callout": {
-      const iconDisplay =
-        block.callout.icon?.type === "emoji" ? block.callout.icon.emoji : null;
+      const icon = block.callout.icon;
+      let iconElement: React.ReactNode = null;
+      if (icon) {
+        switch (icon.type) {
+          case "emoji":
+            iconElement = <span className="text-[20px]">{icon.emoji}</span>;
+            break;
+          case "external":
+            iconElement = (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={icon.external.url} alt="" width={20} height={20} />
+            );
+            break;
+          case "file":
+            iconElement = (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={icon.file.url} alt="" width={20} height={20} />
+            );
+            break;
+        }
+      }
 
       return (
         <div className="flex gap-3 rounded-lg bg-gray-50 p-4">
-          {iconDisplay && <span className="text-[20px]">{iconDisplay}</span>}
+          {iconElement}
           <div className="flex-1">
             <RichText items={block.callout.rich_text} />
             <ChildBlocks block={block} className="mt-2" />
@@ -172,8 +193,10 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imageUrl}
-            alt={caption.map((c) => c.plain_text).join("") || "image"}
+            alt={caption.map((c) => c.plain_text).join("") || ""}
             className="w-full"
+            loading="lazy"
+            decoding="async"
           />
           {caption.length > 0 && (
             <figcaption className="mt-2 text-center text-[14px] text-gray-500">
@@ -195,6 +218,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
             <iframe
               src={`https://www.youtube.com/embed/${youtubeId}`}
               className="aspect-video w-full rounded"
+              sandbox="allow-scripts allow-same-origin allow-popups"
               allowFullScreen
               title="YouTube video"
             />
@@ -286,6 +310,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
         <iframe
           src={block.embed.url}
           className="aspect-video w-full rounded border"
+          sandbox="allow-scripts allow-same-origin allow-popups"
           allowFullScreen
           title="Embedded content"
         />
@@ -299,40 +324,43 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
       );
 
     case "table": {
-      const rows = block.children ?? [];
+      type TableRowBlock = BlockWithChildren &
+        Extract<BlockObjectResponse, { type: "table_row" }>;
+      const rows = (block.children ?? []).filter(
+        (r): r is TableRowBlock => r.type === "table_row",
+      );
+      const hasColumnHeader = block.table.has_column_header;
+      const headerRows = hasColumnHeader ? rows.slice(0, 1) : [];
+      const bodyRows = hasColumnHeader ? rows.slice(1) : rows;
+
+      const renderRow = (row: TableRowBlock, isHeader: boolean) => (
+        <tr key={row.id} className={cn(isHeader && "bg-gray-50")}>
+          {row.table_row.cells.map((cell, cellIndex) => {
+            const isRowHeader = cellIndex === 0 && block.table.has_row_header;
+            const Tag = isRowHeader || isHeader ? "th" : "td";
+
+            return (
+              <Tag
+                key={cellIndex}
+                className={cn(
+                  "border px-3 py-2",
+                  (isRowHeader || isHeader) && "text-left font-semibold",
+                )}
+              >
+                <RichText items={cell} />
+              </Tag>
+            );
+          })}
+        </tr>
+      );
+
       return (
         <div className="overflow-x-auto">
           <table className="w-full border-collapse border">
-            <tbody>
-              {rows.map((row, rowIndex) => {
-                if (row.type !== "table_row") return null;
-                const isHeader =
-                  rowIndex === 0 && block.table.has_column_header;
-
-                return (
-                  <tr key={row.id} className={cn(isHeader && "bg-gray-50")}>
-                    {row.table_row.cells.map((cell, cellIndex) => {
-                      const isRowHeader =
-                        cellIndex === 0 && block.table.has_row_header;
-                      const Tag = isRowHeader || isHeader ? "th" : "td";
-
-                      return (
-                        <Tag
-                          key={cellIndex}
-                          className={cn(
-                            "border px-3 py-2",
-                            (isRowHeader || isHeader) &&
-                              "text-left font-semibold",
-                          )}
-                        >
-                          <RichText items={cell} />
-                        </Tag>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
+            {headerRows.length > 0 && (
+              <thead>{headerRows.map((row) => renderRow(row, true))}</thead>
+            )}
+            <tbody>{bodyRows.map((row) => renderRow(row, false))}</tbody>
           </table>
         </div>
       );
@@ -361,7 +389,9 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
 
     case "child_page":
       return (
-        <div className="rounded border p-3">📄 {block.child_page.title}</div>
+        <div className="rounded border p-3">
+          <a href={`/articles/${block.id}`}>📄 {block.child_page.title}</a>
+        </div>
       );
 
     case "child_database":
@@ -385,7 +415,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
 
       return id ? (
         <div className="rounded border p-3">
-          🔗 <span className="text-gray-600">リンク先: {id}</span>
+          <a href={`/articles/${id}`}>🔗 リンク先ページ</a>
         </div>
       ) : null;
     }

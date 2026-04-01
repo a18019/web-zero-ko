@@ -1,4 +1,6 @@
+import { CategoryNav } from "@/components/CategoryNav";
 import {
+  fetchActiveCategories,
   fetchPages,
   getCategory,
   getPublicationDate,
@@ -11,7 +13,10 @@ import Link from "next/link";
 export const revalidate = 30;
 
 export default async function ArticlesPage() {
-  const pages = await fetchPages(6);
+  const [pages, categories] = await Promise.all([
+    fetchPages(6),
+    fetchActiveCategories(),
+  ]);
 
   return (
     <section className="pt-16 pb-20 lg:pt-24 lg:pb-40">
@@ -20,6 +25,7 @@ export default async function ArticlesPage() {
         <p className="mt-4 text-[16px] lg:mt-6">
           ゼロ高等学院の最新ニュースをお届けします
         </p>
+        <CategoryNav categories={categories} />
         <ul className="mt-16 grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-x-6 gap-y-12 lg:mt-32">
           {pages.map((page) => {
             const thumbnail = getThumbnailUrl(page);

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import Slider from "./Slider";
 
 const teachers = [
   {
@@ -34,37 +35,28 @@ const teachers = [
 
 export default function TeacherFeatures() {
   return (
-    <section>
-      <div className="w-inner mx-auto max-w-[1128px]">
-        <h2 className="text-[32px] lg:text-[48px]">講師のノート</h2>
-        <div className="-mx-4 mt-12 overflow-hidden">
-          <ul className="flex snap-x snap-mandatory scroll-pl-8 gap-4 overflow-x-scroll px-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {teachers.map((teacher) => (
-              <li key={teacher.name} className="flex-none snap-start">
-                <Link
-                  href={teacher.href}
-                  className="border-muted block aspect-4/5 w-[296px] overflow-hidden rounded-3xl border"
-                >
-                  <Image
-                    src={teacher.image}
-                    width={248}
-                    height={140}
-                    alt=""
-                    className="aspect-video w-full object-cover"
-                  />
-                  <div className="mt-4 px-6">
-                    <p className="text-[12px]">{teacher.role}</p>
-                    <p className="mt-2 text-[20px]">{teacher.name}</p>
-                    <p className="mt-2 line-clamp-4 text-[14px]">
-                      {teacher.bio}
-                    </p>
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </section>
+    <Slider title="講師のノート">
+      {teachers.map((teacher) => (
+        <li key={teacher.name} className="flex-none snap-start">
+          <Link
+            href={teacher.href}
+            className="border-muted block aspect-4/5 w-[296px] overflow-hidden rounded-3xl border"
+          >
+            <Image
+              src={teacher.image}
+              width={248}
+              height={140}
+              alt=""
+              className="aspect-video w-full object-cover"
+            />
+            <div className="mt-4 px-6">
+              <p className="text-[12px]">{teacher.role}</p>
+              <p className="mt-2 text-[20px]">{teacher.name}</p>
+              <p className="mt-2 line-clamp-4 text-[14px]">{teacher.bio}</p>
+            </div>
+          </Link>
+        </li>
+      ))}
+    </Slider>
   );
 }

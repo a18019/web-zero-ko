@@ -25,6 +25,39 @@ const colorMap: Record<string, string> = {
   red_background: "bg-red-50",
 };
 
+function isSafeHref(url: string): boolean {
+  if (url.startsWith("/")) return true;
+  try {
+    const { protocol } = new URL(url);
+    return (
+      protocol === "https:" || protocol === "http:" || protocol === "mailto:"
+    );
+  } catch {
+    return false;
+  }
+}
+
+function SafeLink({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      className={cn("text-blue-600 underline hover:text-blue-800", className)}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {children}
+    </a>
+  );
+}
+
 function RichTextItem({ item }: { item: RichTextItemResponse }) {
   const { annotations, plain_text, href } = item;
 
@@ -47,29 +80,53 @@ function RichTextItem({ item }: { item: RichTextItemResponse }) {
     );
   }
 
-  let element = <span className={className}>{plain_text}</span>;
+  if (item.type === "mention") {
+    const mention = item.mention;
+    switch (mention.type) {
+      case "date":
+        return (
+          <time dateTime={mention.date.start} className={className}>
+            {plain_text}
+          </time>
+        );
+      case "page":
+        return (
+          <a href={`/articles/${mention.page.id}`} className={className}>
+            {plain_text}
+          </a>
+        );
+      case "link_preview":
+        return href && isSafeHref(href) ? (
+          <SafeLink href={href} className={className}>
+            {plain_text}
+          </SafeLink>
+        ) : (
+          <span className={className}>{plain_text}</span>
+        );
+      default:
+        return <span className={className}>{plain_text}</span>;
+    }
+  }
 
-  if (href) {
-    element = (
-      <a
-        href={href}
-        className={cn("text-blue-600 underline hover:text-blue-800", className)}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+  if (href && isSafeHref(href)) {
+    return (
+      <SafeLink href={href} className={className}>
         {plain_text}
-      </a>
+      </SafeLink>
     );
   }
 
-  return element;
+  return <span className={className}>{plain_text}</span>;
 }
 
 export function RichText({ items }: { items: RichTextItemResponse[] }) {
   return (
     <>
       {items.map((item, i) => (
-        <RichTextItem key={i} item={item} />
+        <RichTextItem
+          key={`${i}-${item.plain_text.slice(0, 16)}`}
+          item={item}
+        />
       ))}
     </>
   );
