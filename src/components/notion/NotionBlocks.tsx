@@ -1,16 +1,41 @@
-import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+import type {
+  BlockObjectResponse,
+  RichTextItemResponse,
+} from "@notionhq/client/build/src/api-endpoints";
+import Image from "next/image";
+import Link from "next/link";
 
 import type { BlockWithChildren } from "@/lib/notion";
+import { notionFileProxyUrl } from "@/lib/notion-file";
 import { cn } from "@/lib/utils";
 
+import { BookmarkCard } from "./BookmarkCard";
 import { RichText } from "./RichText";
 
+const listWrappers: Record<
+  string,
+  { tag: "ul" | "ol" | "div"; className: string }
+> = {
+  bulleted_list_item: {
+    tag: "ul",
+    className:
+      "space-y-2 mb-6 [&>li]:before:content-['・'] pl-4 [&>li]:before:w-4 [&>li]:before:inline-block [&>li]:before:text-right [&>li]:before:mr-2",
+  },
+  numbered_list_item: {
+    tag: "ol",
+    className: "list-decimal space-y-2 mb-6 pl-10",
+  },
+};
+
 function getFileUrl(
+  blockId: string,
   fileObj:
     | { type: "external"; external: { url: string } }
     | { type: "file"; file: { url: string } },
 ): string {
-  return fileObj.type === "external" ? fileObj.external.url : fileObj.file.url;
+  return fileObj.type === "external"
+    ? fileObj.external.url
+    : notionFileProxyUrl(blockId);
 }
 
 function extractYouTubeId(url: string): string | null {
@@ -18,18 +43,6 @@ function extractYouTubeId(url: string): string | null {
     /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/,
   );
   return match?.[1] ?? null;
-}
-
-function ChildBlocks({
-  block,
-  className,
-}: {
-  block: BlockWithChildren;
-  className?: string;
-}) {
-  if (!block.children?.length) return null;
-  const content = <NotionBlockList blocks={block.children} />;
-  return className ? <div className={className}>{content}</div> : content;
 }
 
 function collectConsecutive(
@@ -46,7 +59,25 @@ function collectConsecutive(
   return { items, nextIndex: i };
 }
 
-function NotionBlock({ block }: { block: BlockWithChildren }) {
+function ChildBlocks({
+  block,
+  className,
+}: {
+  block: BlockWithChildren;
+  className?: string;
+}) {
+  if (!block.children?.length) return null;
+  const content = <NotionBlockList blocks={block.children} />;
+  return className ? <div className={className}>{content}</div> : content;
+}
+
+function NotionBlock({
+  block,
+  allBlocks,
+}: {
+  block: BlockWithChildren;
+  allBlocks?: BlockWithChildren[];
+}) {
   switch (block.type) {
     case "paragraph":
       return (
@@ -56,22 +87,52 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
       );
 
     case "heading_1":
+      if (block.heading_1.is_toggleable) {
+        return (
+          <details className="mt-12 mb-6 lg:mt-16">
+            <summary className="cursor-pointer list-none text-[24px] before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90">
+              <RichText items={block.heading_1.rich_text} />
+            </summary>
+            <ChildBlocks block={block} className="mt-4" />
+          </details>
+        );
+      }
       return (
-        <h1 className="mt-12 mb-6 text-[20px] lg:mt-16">
+        <h2 id={block.id} className="mt-12 mb-6 text-[24px] lg:mt-16">
           <RichText items={block.heading_1.rich_text} />
-        </h1>
+        </h2>
       );
 
     case "heading_2":
+      if (block.heading_2.is_toggleable) {
+        return (
+          <details className="mt-12 mb-6 lg:mt-16">
+            <summary className="cursor-pointer list-none text-[24px] before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90">
+              <RichText items={block.heading_2.rich_text} />
+            </summary>
+            <ChildBlocks block={block} className="mt-4" />
+          </details>
+        );
+      }
       return (
-        <h2 className="mt-12 mb-6 text-[20px] lg:mt-16">
+        <h2 id={block.id} className="mt-12 mb-6 text-[24px] lg:mt-16">
           <RichText items={block.heading_2.rich_text} />
         </h2>
       );
 
     case "heading_3":
+      if (block.heading_3.is_toggleable) {
+        return (
+          <details className="mt-12 mb-6 lg:mt-16">
+            <summary className="cursor-pointer list-none text-[20px] before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90">
+              <RichText items={block.heading_3.rich_text} />
+            </summary>
+            <ChildBlocks block={block} className="mt-4" />
+          </details>
+        );
+      }
       return (
-        <h3 className="mt-12 mb-6 text-[20px] lg:mt-16">
+        <h3 id={block.id} className="mt-12 mb-6 text-[20px] lg:mt-16">
           <RichText items={block.heading_3.rich_text} />
         </h3>
       );
@@ -92,36 +153,32 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
         </li>
       );
 
-    case "to_do":
-      return (
-        <div className="flex items-start gap-2">
-          <input
-            type="checkbox"
-            checked={block.to_do.checked}
-            readOnly
-            className="mt-1"
-          />
-          <span
-            className={block.to_do.checked ? "line-through opacity-60" : ""}
-          >
-            <RichText items={block.to_do.rich_text} />
-          </span>
-        </div>
-      );
+    case "image": {
+      const imageUrl = getFileUrl(block.id, block.image);
+      const caption = "caption" in block.image ? block.image.caption : [];
 
-    case "toggle":
       return (
-        <details className="rounded border p-3">
-          <summary className="cursor-pointer font-medium">
-            <RichText items={block.toggle.rich_text} />
-          </summary>
-          <ChildBlocks block={block} className="mt-2 pl-4" />
-        </details>
+        <figure className="my-8">
+          <Image
+            src={imageUrl}
+            alt={caption.map((c) => c.plain_text).join("") || ""}
+            className="w-full"
+            width={800}
+            height={450}
+            sizes="(max-width: 768px) 100vw, 800px"
+          />
+          {caption.length > 0 && (
+            <figcaption className="mt-2 text-[12px]">
+              <RichText items={caption} />
+            </figcaption>
+          )}
+        </figure>
       );
+    }
 
     case "quote":
       return (
-        <blockquote className="border-l-4 border-gray-300 pl-4 italic">
+        <blockquote className="border-muted mt-12 mb-6 border-l-2 py-2 pl-4 italic">
           <RichText items={block.quote.rich_text} />
           <ChildBlocks block={block} />
         </blockquote>
@@ -137,21 +194,24 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
             break;
           case "external":
             iconElement = (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={icon.external.url} alt="" width={20} height={20} />
+              <Image src={icon.external.url} alt="" width={20} height={20} />
             );
             break;
           case "file":
             iconElement = (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={icon.file.url} alt="" width={20} height={20} />
+              <Image
+                src={notionFileProxyUrl(block.id)}
+                alt=""
+                width={20}
+                height={20}
+              />
             );
             break;
         }
       }
 
       return (
-        <div className="flex gap-3 rounded-lg bg-gray-50 p-4">
+        <div className="bg-surface mt-12 mb-6 flex gap-3 p-4">
           {iconElement}
           <div className="flex-1">
             <RichText items={block.callout.rich_text} />
@@ -165,15 +225,15 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
       const codeText = block.code.rich_text.map((t) => t.plain_text).join("");
 
       return (
-        <div className="overflow-hidden rounded-lg border">
-          <div className="bg-gray-100 px-4 py-1.5 text-[12px] text-gray-500">
+        <div className="bg-surface overflow-hidden">
+          <div className="text-muted px-4 py-1.5 text-[12px]">
             {block.code.language}
           </div>
-          <pre className="overflow-x-auto bg-gray-50 p-4">
+          <pre className="overflow-x-auto p-4">
             <code className="font-mono text-[14px]">{codeText}</code>
           </pre>
           {block.code.caption.length > 0 && (
-            <div className="px-4 py-1.5 text-[14px] text-gray-500">
+            <div className="text-muted px-4 py-1.5 text-[14px]">
               <RichText items={block.code.caption} />
             </div>
           )}
@@ -182,145 +242,16 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
     }
 
     case "divider":
-      return <hr className="my-8 border-gray-200" />;
+      return <hr className="border-muted my-8" />;
 
-    case "image": {
-      const imageUrl = getFileUrl(block.image);
-      const caption = "caption" in block.image ? block.image.caption : [];
-
+    case "toggle":
       return (
-        <figure className="my-8">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={imageUrl}
-            alt={caption.map((c) => c.plain_text).join("") || ""}
-            className="w-full"
-            loading="lazy"
-            decoding="async"
-          />
-          {caption.length > 0 && (
-            <figcaption className="mt-2 text-center text-[14px] text-gray-500">
-              <RichText items={caption} />
-            </figcaption>
-          )}
-        </figure>
-      );
-    }
-
-    case "video": {
-      const videoUrl = getFileUrl(block.video);
-      const videoCaption = "caption" in block.video ? block.video.caption : [];
-      const youtubeId = extractYouTubeId(videoUrl);
-
-      return (
-        <figure className="my-16">
-          {youtubeId ? (
-            <iframe
-              src={`https://www.youtube.com/embed/${youtubeId}`}
-              className="aspect-video w-full rounded"
-              sandbox="allow-scripts allow-same-origin allow-popups"
-              allowFullScreen
-              title="YouTube video"
-            />
-          ) : (
-            <video src={videoUrl} controls className="max-w-full rounded" />
-          )}
-          {videoCaption.length > 0 && (
-            <figcaption className="mt-2 text-center text-[14px] text-gray-500">
-              <RichText items={videoCaption} />
-            </figcaption>
-          )}
-        </figure>
-      );
-    }
-
-    case "audio": {
-      const audioUrl = getFileUrl(block.audio);
-
-      return <audio src={audioUrl} controls className="w-full" />;
-    }
-
-    case "file": {
-      const fileUrl = getFileUrl(block.file);
-      const fileName =
-        "name" in block.file ? block.file.name : "ファイルをダウンロード";
-      const fileCaption = "caption" in block.file ? block.file.caption : [];
-
-      return (
-        <div>
-          <a
-            href={fileUrl}
-            className="inline-flex items-center gap-2 rounded border px-4 py-2 text-blue-600 hover:bg-gray-50"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            📎 {fileName}
-          </a>
-          {fileCaption.length > 0 && (
-            <p className="mt-1 text-[14px] text-gray-500">
-              <RichText items={fileCaption} />
-            </p>
-          )}
-        </div>
-      );
-    }
-
-    case "pdf": {
-      const pdfUrl = getFileUrl(block.pdf);
-      const pdfCaption = "caption" in block.pdf ? block.pdf.caption : [];
-
-      return (
-        <figure>
-          <embed
-            src={pdfUrl}
-            type="application/pdf"
-            className="h-[600px] w-full rounded border"
-          />
-          {pdfCaption.length > 0 && (
-            <figcaption className="mt-2 text-center text-[14px] text-gray-500">
-              <RichText items={pdfCaption} />
-            </figcaption>
-          )}
-        </figure>
-      );
-    }
-
-    case "bookmark": {
-      return (
-        <div className="rounded-lg border p-4">
-          <a
-            href={block.bookmark.url}
-            className="text-blue-600 underline hover:text-blue-800"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {block.bookmark.url}
-          </a>
-          {block.bookmark.caption.length > 0 && (
-            <p className="mt-1 text-[14px] text-gray-500">
-              <RichText items={block.bookmark.caption} />
-            </p>
-          )}
-        </div>
-      );
-    }
-
-    case "embed":
-      return (
-        <iframe
-          src={block.embed.url}
-          className="aspect-video w-full rounded border"
-          sandbox="allow-scripts allow-same-origin allow-popups"
-          allowFullScreen
-          title="Embedded content"
-        />
-      );
-
-    case "equation":
-      return (
-        <div className="my-4 overflow-x-auto rounded bg-gray-50 p-4 text-center font-mono">
-          {block.equation.expression}
-        </div>
+        <details className="mb-6">
+          <summary className="cursor-pointer list-none pl-4 before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [[open]>&]:before:rotate-90">
+            <RichText items={block.toggle.rich_text} />
+          </summary>
+          <ChildBlocks block={block} className="mt-2 pl-10" />
+        </details>
       );
 
     case "table": {
@@ -334,7 +265,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
       const bodyRows = hasColumnHeader ? rows.slice(1) : rows;
 
       const renderRow = (row: TableRowBlock, isHeader: boolean) => (
-        <tr key={row.id} className={cn(isHeader && "bg-gray-50")}>
+        <tr key={row.id} className={cn(isHeader && "bg-surface")}>
           {row.table_row.cells.map((cell, cellIndex) => {
             const isRowHeader = cellIndex === 0 && block.table.has_row_header;
             const Tag = isRowHeader || isHeader ? "th" : "td";
@@ -343,7 +274,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
               <Tag
                 key={cellIndex}
                 className={cn(
-                  "border px-3 py-2",
+                  "px-3 py-2",
                   (isRowHeader || isHeader) && "text-left font-semibold",
                 )}
               >
@@ -356,7 +287,7 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
 
       return (
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse border">
+          <table className="w-full border-collapse">
             {headerRows.length > 0 && (
               <thead>{headerRows.map((row) => renderRow(row, true))}</thead>
             )}
@@ -366,8 +297,99 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
       );
     }
 
-    case "table_row":
-      return null;
+    case "table_of_contents": {
+      if (!allBlocks) return null;
+
+      const headings = allBlocks.filter(
+        (b) =>
+          b.type === "heading_1" ||
+          b.type === "heading_2" ||
+          b.type === "heading_3",
+      );
+
+      if (headings.length === 0) return null;
+
+      return (
+        <nav className="bg-surface my-8 p-6">
+          <p className="mb-3 font-semibold">目次</p>
+          <ul className="space-y-1">
+            {headings.map((h) => {
+              const level =
+                h.type === "heading_1" ? 0 : h.type === "heading_2" ? 1 : 2;
+              const text: RichTextItemResponse[] =
+                h.type === "heading_1"
+                  ? h.heading_1.rich_text
+                  : h.type === "heading_2"
+                    ? h.heading_2.rich_text
+                    : (h as Extract<BlockObjectResponse, { type: "heading_3" }>)
+                        .heading_3.rich_text;
+
+              return (
+                <li key={h.id} style={{ paddingLeft: `${level * 1.25}rem` }}>
+                  <a
+                    href={`#${h.id}`}
+                    className="text-articles-link text-[14px] hover:underline"
+                  >
+                    {text.map((t) => t.plain_text).join("")}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      );
+    }
+
+    case "bookmark": {
+      return (
+        <BookmarkCard
+          url={block.bookmark.url}
+          caption={
+            block.bookmark.caption.length > 0 ? (
+              <RichText items={block.bookmark.caption} />
+            ) : undefined
+          }
+        />
+      );
+    }
+
+    case "video": {
+      const videoUrl = getFileUrl(block.id, block.video);
+      const videoCaption = "caption" in block.video ? block.video.caption : [];
+      const youtubeId = extractYouTubeId(videoUrl);
+
+      return (
+        <figure className="my-16">
+          {youtubeId ? (
+            <iframe
+              src={`https://www.youtube.com/embed/${youtubeId}`}
+              className="aspect-video w-full"
+              sandbox="allow-scripts allow-same-origin allow-popups"
+              allowFullScreen
+              title="YouTube video"
+            />
+          ) : (
+            <video src={videoUrl} controls className="max-w-full" />
+          )}
+          {videoCaption.length > 0 && (
+            <figcaption className="mt-2 text-[12px]">
+              <RichText items={videoCaption} />
+            </figcaption>
+          )}
+        </figure>
+      );
+    }
+
+    case "embed":
+      return (
+        <iframe
+          src={block.embed.url}
+          className="aspect-video w-full"
+          sandbox="allow-scripts allow-same-origin allow-popups"
+          allowFullScreen
+          title="Embedded content"
+        />
+      );
 
     case "column_list": {
       const columns = block.children ?? [];
@@ -387,83 +409,95 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
     case "column":
       return null;
 
-    case "child_page":
-      return (
-        <div className="rounded border p-3">
-          <a href={`/articles/${block.id}`}>📄 {block.child_page.title}</a>
-        </div>
-      );
-
-    case "child_database":
-      return (
-        <div className="rounded border p-3">
-          🗄️ {block.child_database.title}
-        </div>
-      );
-
-    case "synced_block":
-      return <ChildBlocks block={block} />;
-
     case "link_to_page": {
-      const linkTo = block.link_to_page;
-      const id =
-        linkTo.type === "page_id"
-          ? linkTo.page_id
-          : linkTo.type === "database_id"
-            ? linkTo.database_id
+      const linkType = block.link_to_page.type;
+      const linkedId =
+        linkType === "page_id"
+          ? block.link_to_page.page_id
+          : linkType === "database_id"
+            ? block.link_to_page.database_id
             : null;
 
-      return id ? (
-        <div className="rounded border p-3">
-          <a href={`/articles/${id}`}>🔗 リンク先ページ</a>
-        </div>
-      ) : null;
+      if (!linkedId) return null;
+
+      return (
+        <Link
+          href={`/articles/${linkedId}`}
+          className="text-articles-link my-2 flex items-center gap-2 py-3"
+        >
+          リンクされたページ
+        </Link>
+      );
     }
 
-    case "link_preview":
-      return (
-        <a
-          href={block.link_preview.url}
-          className="block rounded border p-3 text-blue-600 underline hover:bg-gray-50"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {block.link_preview.url}
-        </a>
-      );
+    case "file": {
+      const fileUrl = getFileUrl(block.id, block.file);
+      const fileName =
+        "name" in block.file ? block.file.name : "ファイルをダウンロード";
+      const fileCaption = "caption" in block.file ? block.file.caption : [];
 
-    case "breadcrumb":
-    case "table_of_contents":
+      return (
+        <div>
+          <a
+            href={fileUrl}
+            className="text-articles-link inline-flex items-center gap-2 py-2"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {fileName}
+          </a>
+          {fileCaption.length > 0 && (
+            <p className="text-muted mt-1 text-[14px]">
+              <RichText items={fileCaption} />
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    case "audio": {
+      const audioUrl = getFileUrl(block.id, block.audio);
+      const audioCaption = "caption" in block.audio ? block.audio.caption : [];
+
+      return (
+        <figure className="my-8">
+          {}
+          <audio src={audioUrl} controls className="w-full" />
+          {audioCaption.length > 0 && (
+            <figcaption className="mt-2 text-[12px]">
+              <RichText items={audioCaption} />
+            </figcaption>
+          )}
+        </figure>
+      );
+    }
+
+    case "pdf": {
+      const pdfUrl = getFileUrl(block.id, block.pdf);
+      const pdfCaption = "caption" in block.pdf ? block.pdf.caption : [];
+
+      return (
+        <figure>
+          <embed
+            src={pdfUrl}
+            type="application/pdf"
+            className="h-[600px] w-full"
+          />
+          {pdfCaption.length > 0 && (
+            <figcaption className="mt-2 text-[12px]">
+              <RichText items={pdfCaption} />
+            </figcaption>
+          )}
+        </figure>
+      );
+    }
+
+    case "table_row":
       return null;
-
-    case "template":
-      return (
-        <div className="rounded border border-dashed p-3 text-gray-400">
-          <RichText items={block.template.rich_text} />
-        </div>
-      );
-
-    case "meeting_notes":
-      return (
-        <div className="rounded border p-3">
-          🎙️{" "}
-          {block.meeting_notes.title?.map((t) => t.plain_text).join("") ??
-            "Meeting Notes"}
-        </div>
-      );
-
-    case "transcription":
-      return (
-        <div className="rounded border p-3">
-          🎙️{" "}
-          {block.transcription.title?.map((t) => t.plain_text).join("") ??
-            "Transcription"}
-        </div>
-      );
 
     case "unsupported":
       return (
-        <div className="rounded bg-gray-50 p-3 text-[14px] text-gray-400">
+        <div className="bg-surface text-muted p-3 text-[14px]">
           未対応ブロック ({block.unsupported.block_type})
         </div>
       );
@@ -472,15 +506,6 @@ function NotionBlock({ block }: { block: BlockWithChildren }) {
       return null;
   }
 }
-
-const listWrappers: Record<
-  string,
-  { tag: "ul" | "ol" | "div"; className: string }
-> = {
-  bulleted_list_item: { tag: "ul", className: "list-disc space-y-1 pl-6" },
-  numbered_list_item: { tag: "ol", className: "list-decimal space-y-1 pl-6" },
-  to_do: { tag: "div", className: "space-y-1" },
-};
 
 export function NotionBlockList({ blocks }: { blocks: BlockWithChildren[] }) {
   const elements: React.ReactNode[] = [];
@@ -496,7 +521,7 @@ export function NotionBlockList({ blocks }: { blocks: BlockWithChildren[] }) {
       elements.push(
         <Tag key={items[0].id} className={wrapper.className}>
           {items.map((item) => (
-            <NotionBlock key={item.id} block={item} />
+            <NotionBlock key={item.id} block={item} allBlocks={blocks} />
           ))}
         </Tag>,
       );
@@ -504,7 +529,9 @@ export function NotionBlockList({ blocks }: { blocks: BlockWithChildren[] }) {
       continue;
     }
 
-    elements.push(<NotionBlock key={block.id} block={block} />);
+    elements.push(
+      <NotionBlock key={block.id} block={block} allBlocks={blocks} />,
+    );
     i++;
   }
 

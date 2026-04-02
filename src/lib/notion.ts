@@ -5,6 +5,8 @@ import type {
 } from "@notionhq/client/build/src/api-endpoints";
 import { cache } from "react";
 
+import { notionPropertyProxyUrl } from "./notion-file";
+
 export const notion = new Client({
   auth: process.env.NOTION_API_KEY,
 });
@@ -59,7 +61,8 @@ export function getThumbnailUrl(
   const prop = page.properties.thumbnail;
   if (prop?.type === "files") {
     const file = prop.files[0];
-    if (file?.type === "file") return file.file.url;
+    if (file?.type === "file")
+      return notionPropertyProxyUrl(page.id, "thumbnail");
     if (file?.type === "external") return file.external.url;
   }
   return fallback;
@@ -138,7 +141,8 @@ export function getStudentsMemoUrl(
   const prop = page.properties.studentsMemo;
   if (prop?.type === "files") {
     const file = prop.files[0];
-    if (file?.type === "file") return file.file.url;
+    if (file?.type === "file")
+      return notionPropertyProxyUrl(page.id, "studentsMemo");
     if (file?.type === "external") return file.external.url;
   }
   return fallback;

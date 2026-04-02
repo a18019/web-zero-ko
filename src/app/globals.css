@@ -7,6 +7,7 @@
   --color-muted: #717581;
   --color-accent-navy: #00124f;
   --color-accent-lime: #e7ff00;
+  --color-articles-link: #1a48e8;
 }
 
 @theme inline {
@@ -18,6 +19,7 @@
   --color-muted: var(--color-muted);
   --color-accent-navy: var(--color-accent-navy);
   --color-accent-lime: var(--color-accent-lime);
+  --color-articles-link: var(--color-articles-link);
 
   --z-index-header-toggle: 8;
   --z-index-header-menu: 7;

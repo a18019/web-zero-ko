@@ -3,26 +3,25 @@ import type { RichTextItemResponse } from "@notionhq/client/build/src/api-endpoi
 import { cn } from "@/lib/utils";
 
 const colorMap: Record<string, string> = {
+  blue: "text-blue-500",
+  blue_background: "bg-blue-50",
+  brown: "text-amber-700",
+  brown_background: "bg-amber-50",
   default: "",
   gray: "text-gray-500",
-  brown: "text-amber-700",
-  orange: "text-orange-500",
-  yellow: "text-yellow-500",
-  green: "text-green-600",
-  blue: "text-blue-500",
-  purple: "text-purple-500",
-  pink: "text-pink-500",
-  red: "text-red-500",
-  default_background: "",
   gray_background: "bg-gray-100",
-  brown_background: "bg-amber-50",
-  orange_background: "bg-orange-50",
-  yellow_background: "bg-yellow-50",
+  green: "text-green-600",
   green_background: "bg-green-50",
-  blue_background: "bg-blue-50",
-  purple_background: "bg-purple-50",
+  orange: "text-orange-500",
+  orange_background: "bg-orange-50",
+  pink: "text-pink-500",
   pink_background: "bg-pink-50",
+  purple: "text-purple-500",
+  purple_background: "bg-purple-50",
+  red: "text-red-500",
   red_background: "bg-red-50",
+  yellow: "text-yellow-500",
+  yellow_background: "bg-yellow-50",
 };
 
 function isSafeHref(url: string): boolean {
@@ -49,7 +48,7 @@ function SafeLink({
   return (
     <a
       href={href}
-      className={cn("text-blue-600 underline hover:text-blue-800", className)}
+      className={cn("text-articles-link underline hover:opacity-80", className)}
       target="_blank"
       rel="noopener noreferrer"
     >

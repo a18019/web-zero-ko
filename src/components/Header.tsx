@@ -48,7 +48,7 @@ export default function Header() {
             />
           ))}
         </label>
-        <nav className="z-header-menu bg-surface fixed inset-0 hidden overflow-y-scroll transition-[clip-path,display] transition-discrete [clip-path:inset(0_0_100%_0)] group-has-checked:block group-has-checked:[clip-path:inset(0_0_0_0)] lg:static lg:block lg:[clip-path:none] starting:group-has-checked:[clip-path:inset(0_0_100%_0)]">
+        <nav className="z-header-menu bg-surface fixed inset-0 hidden overflow-y-auto transition-[clip-path,display] transition-discrete [clip-path:inset(0_0_100%_0)] group-has-checked:block group-has-checked:[clip-path:inset(0_0_0_0)] lg:static lg:block lg:[clip-path:none] starting:group-has-checked:[clip-path:inset(0_0_100%_0)]">
           <ul className="flex flex-col gap-2 pt-20 pb-16 lg:hidden">
             {MobileNavLinks.map((navLink) => (
               <li key={navLink.label}>
