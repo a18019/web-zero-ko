@@ -4,6 +4,7 @@ import {
   getThumbnailUrl,
   getTitle,
 } from "@/lib/notion";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -20,15 +21,16 @@ export default async function FeaturedContent() {
         {first && (
           <Link
             href={`/articles/${first.id}`}
-            className="border-muted flex flex-col overflow-hidden rounded-3xl border"
+            className="bg-background drop-shadow-card flex flex-col overflow-hidden rounded-3xl"
           >
-            <Image
-              src={getThumbnailUrl(first) || "/no-image.png"}
-              alt=""
-              width={552}
-              height={311}
-              className="aspect-video w-full object-cover"
-            />
+            <div className="relative aspect-3/2 w-full">
+              <Image
+                src={getThumbnailUrl(first) || "/no-image.png"}
+                alt=""
+                fill
+                className="object-cover"
+              />
+            </div>
             <div className="flex flex-1 flex-col justify-around px-6 pt-6 pb-8 lg:px-8 lg:pt-12 lg:pb-16">
               <p className="text-sm">{getCategory(first)}</p>
               <p className="mt-4 line-clamp-3 text-xl">{getTitle(first)}</p>
@@ -42,11 +44,22 @@ export default async function FeaturedContent() {
               <Link
                 key={page.id}
                 href={`/articles/${page.id}`}
-                className={`border-muted overflow-hidden rounded-3xl border px-6 pt-6 pb-8 ${i === 1 ? "bg-surface" : ""}`}
+                className={cn(
+                  "drop-shadow-card flex items-center gap-6 overflow-hidden rounded-3xl px-6 pt-6 pb-8",
+                  i === 1 ? "bg-surface" : "bg-background",
+                )}
               >
+                <div className="relative hidden aspect-video h-20 lg:block">
+                  <Image
+                    src={getThumbnailUrl(page) || "/no-image.png"}
+                    fill
+                    alt=""
+                    className="rounded-2xl object-cover"
+                  />
+                </div>
                 <div>
                   <p className="text-sm">{getCategory(page)}</p>
-                  <p className="mt-4 line-clamp-3 text-xl">{getTitle(page)}</p>
+                  <p className="mt-4 line-clamp-3 text-lg">{getTitle(page)}</p>
                 </div>
               </Link>
             ))}

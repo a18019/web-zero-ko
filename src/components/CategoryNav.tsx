@@ -6,28 +6,25 @@ type Props = {
   activeSlug?: string;
 };
 
+function pillClass(isActive: boolean): string {
+  return `rounded-full border px-4 py-2 text-sm transition-colors ${
+    isActive
+      ? "bg-foreground text-background border-foreground"
+      : "border-muted hover:border-foreground"
+  }`;
+}
+
 export function CategoryNav({ categories, activeSlug }: Props) {
   return (
     <nav className="mt-8 flex flex-wrap gap-3">
-      <Link
-        href="/articles"
-        className={`rounded-full border px-4 py-2 text-sm transition-colors ${
-          activeSlug === undefined
-            ? "bg-foreground text-background border-foreground"
-            : "border-muted hover:border-foreground"
-        }`}
-      >
+      <Link href="/articles" className={pillClass(activeSlug === undefined)}>
         すべて
       </Link>
       {categories.map((cat) => (
         <Link
           key={cat.slug}
           href={`/articles/${cat.slug}`}
-          className={`rounded-full border px-4 py-2 text-sm transition-colors ${
-            activeSlug === cat.slug
-              ? "bg-foreground text-background border-foreground"
-              : "border-muted hover:border-foreground"
-          }`}
+          className={pillClass(activeSlug === cat.slug)}
         >
           {cat.displayName}
         </Link>

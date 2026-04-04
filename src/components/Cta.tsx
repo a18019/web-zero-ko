@@ -4,13 +4,14 @@ export default function Cta() {
   return (
     <section className="bg-accent-navy py-12">
       <div className="w-inner mx-auto flex max-w-[744px] flex-col gap-4 lg:flex-row-reverse lg:justify-between">
-        <Image
-          src="/pamphlet.png"
-          alt="ゼロ高等学院 学校案内パンフレット"
-          width={120}
-          height={170}
-          className="w-[120px] lg:w-[168px]"
-        />
+        <div className="relative aspect-[120/170] w-[120px] lg:w-[168px]">
+          <Image
+            src="/pamphlet.png"
+            alt="ゼロ高等学院 学校案内パンフレット"
+            fill
+            className="object-cover"
+          />
+        </div>
         <div className="max-w-[456px] flex-1 text-white lg:flex lg:flex-col lg:justify-between">
           <div>
             <h2 className="text-xl font-bold lg:text-5xl">学校案内をお届け</h2>

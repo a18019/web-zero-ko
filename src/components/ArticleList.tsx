@@ -14,7 +14,7 @@ export default async function ArticleList() {
     <section>
       <div className="w-inner mx-auto max-w-[1128px]">
         <h2 className="text-[2rem] lg:text-5xl">記事を見る</h2>
-        <div className="mt-12 grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-8 lg:gap-12">
+        <div className="mt-12 grid gap-8">
           {pages.map((page) => (
             <Link
               key={page.id}
@@ -23,17 +23,16 @@ export default async function ArticleList() {
             >
               <div className="flex flex-col gap-2">
                 <p className="text-sm">{getCategory(page)}</p>
-                <p className="line-clamp-2 text-base lg:line-clamp-1 lg:text-xl">
-                  {getTitle(page)}
-                </p>
+                <p className="line-clamp-2 text-base">{getTitle(page)}</p>
               </div>
-              <Image
-                src={getThumbnailUrl(page) || "/no-image.png"}
-                alt=""
-                width={168}
-                height={94}
-                className="aspect-video object-cover"
-              />
+              <div className="relative aspect-video">
+                <Image
+                  src={getThumbnailUrl(page) || "/no-image.png"}
+                  alt=""
+                  fill
+                  className="object-cover"
+                />
+              </div>
             </Link>
           ))}
         </div>

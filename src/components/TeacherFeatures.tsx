@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import Slider from "./Slider";
@@ -36,19 +37,18 @@ const teachers = [
 export default function TeacherFeatures() {
   return (
     <Slider title="講師のノート">
-      {teachers.map((teacher) => (
+      {teachers.map((teacher, i) => (
         <li key={teacher.name} className="flex-none snap-start">
           <Link
             href={teacher.href}
-            className="border-muted block aspect-4/5 w-[296px] overflow-hidden rounded-3xl border"
+            className={cn(
+              "drop-shadow-card block aspect-4/5 w-[80vw] max-w-90 overflow-hidden rounded-3xl",
+              i % 2 === 1 ? "bg-surface" : "bg-background",
+            )}
           >
-            <Image
-              src={teacher.image}
-              width={248}
-              height={140}
-              alt=""
-              className="aspect-video w-full object-cover"
-            />
+            <div className="relative aspect-video w-full">
+              <Image src={teacher.image} alt="" fill className="object-cover" />
+            </div>
             <div className="mt-4 px-6">
               <p className="text-xs">{teacher.role}</p>
               <p className="mt-2 text-xl">{teacher.name}</p>

@@ -41,7 +41,7 @@ async function ArticleDetail({ slug }: { slug: string }) {
   const articleUrl = `https://students.zero-ko.com/articles/${slug}`;
 
   return (
-    <div className="">
+    <div>
       <article className="pt-12 pb-16 lg:pt-24">
         <div className="w-inner mx-auto max-w-[552px]">
           <h1 className="text-[2rem]">{title}</h1>
@@ -84,13 +84,14 @@ async function CategoryArchive({ slug }: { slug: string }) {
                   href={`/articles/${page.id}`}
                   className="border-muted block overflow-hidden rounded-[24px] border"
                 >
-                  <Image
-                    src={thumbnail || "/no-image.png"}
-                    alt=""
-                    width={328}
-                    height={184}
-                    className="aspect-video w-full object-cover"
-                  />
+                  <div className="relative aspect-video w-full">
+                    <Image
+                      src={thumbnail || "/no-image.png"}
+                      alt=""
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
                   <div className="flex flex-col gap-4 px-6 pt-6 pb-8">
                     <p className="text-sm">{getCategory(page)}</p>
                     <p className="line-clamp-3 text-xl">{getTitle(page)}</p>

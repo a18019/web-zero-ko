@@ -21,11 +21,7 @@
   --color-accent-lime: var(--color-accent-lime);
   --color-articles-link: var(--color-articles-link);
 
-  --z-index-header-toggle: 8;
-  --z-index-header-menu: 7;
   --z-index-subnav: 5;
-  --z-index-subnav-foreground: 6;
-  --z-index-subnav-menu: 4;
 
   --width-inner: calc(20 / 27 * (100vw - 360px) + 328px);
 
@@ -42,6 +38,9 @@
   --text-7xl--line-height: 1.6;
   --text-8xl--line-height: 1.6;
   --text-9xl--line-height: 1.6;
+
+  --drop-shadow-card: 0 1px 2px
+    color-mix(in oklab, var(--foreground) 20%, transparent);
 }
 
 body {
