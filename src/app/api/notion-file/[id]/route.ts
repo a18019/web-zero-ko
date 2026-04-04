@@ -1,6 +1,20 @@
+import { createHmac, timingSafeEqual } from "node:crypto";
+
 import { notion } from "@/lib/notion";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+
+function verifySignature(id: string, sig: string | null): boolean {
+  if (!sig) return false;
+  const secret = process.env.NOTION_API_KEY;
+  if (!secret) return false;
+  const expected = createHmac("sha256", secret).update(id).digest("base64url");
+  try {
+    return timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
+  } catch {
+    return false;
+  }
+}
 
 const IMAGE_CONTENT_TYPES = new Set([
   "image/jpeg",
@@ -14,10 +28,15 @@ const IMAGE_CONTENT_TYPES = new Set([
 ]);
 
 export async function GET(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
+
+  const sig = request.nextUrl.searchParams.get("sig");
+  if (!verifySignature(id, sig)) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
 
   try {
     const url = await resolveNotionFileUrl(id);
