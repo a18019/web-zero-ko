@@ -1,7 +1,7 @@
 import { CategoryNav } from "@/components/CategoryNav";
 import {
   fetchActiveCategories,
-  fetchPages,
+  fetchAllPublishedPages,
   getCategory,
   getPublicationDate,
   getThumbnailUrl,
@@ -13,10 +13,11 @@ import Link from "next/link";
 export const revalidate = 30;
 
 export default async function ArticlesPage() {
-  const [pages, categories] = await Promise.all([
-    fetchPages(6),
+  const [allPages, categories] = await Promise.all([
+    fetchAllPublishedPages(),
     fetchActiveCategories(),
   ]);
+  const pages = allPages.slice(0, 6);
 
   return (
     <section className="pt-16 pb-20 lg:pt-24 lg:pb-40">
@@ -35,13 +36,14 @@ export default async function ArticlesPage() {
                   href={`/articles/${page.id}`}
                   className="border-muted block overflow-hidden rounded-[24px] border"
                 >
-                  <Image
-                    src={thumbnail || "/no-image.png"}
-                    alt=""
-                    width={328}
-                    height={184}
-                    className="aspect-video w-full object-cover"
-                  />
+                  <div className="relative aspect-video w-full">
+                    <Image
+                      src={thumbnail || "/no-image.png"}
+                      alt=""
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
                   <div className="flex flex-col gap-4 px-6 pt-6 pb-8">
                     <p className="text-sm">{getCategory(page)}</p>
                     <p className="line-clamp-3 text-xl">{getTitle(page)}</p>

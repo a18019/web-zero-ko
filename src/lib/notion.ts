@@ -68,11 +68,7 @@ export function getThumbnailUrl(
   return fallback;
 }
 
-let cachedDataSourceId: string | undefined;
-
-async function getDataSourceId(): Promise<string> {
-  if (cachedDataSourceId) return cachedDataSourceId;
-
+const getDataSourceId = cache(async (): Promise<string> => {
   const database = await notion.databases.retrieve({
     database_id: databaseId,
   });
@@ -83,9 +79,8 @@ async function getDataSourceId(): Promise<string> {
   if (!dataSourceId) {
     throw new Error("Notion data source が見つかりません。");
   }
-  cachedDataSourceId = dataSourceId;
   return dataSourceId;
-}
+});
 
 export const fetchPages = cache(
   async (pageSize = 10): Promise<PageObjectResponse[]> => {
@@ -99,6 +94,24 @@ export const fetchPages = cache(
       },
       sorts: [{ property: "publicationDate", direction: "descending" }],
       page_size: pageSize,
+    });
+
+    return response.results.filter(isPage);
+  },
+);
+
+export const fetchAllPublishedPages = cache(
+  async (): Promise<PageObjectResponse[]> => {
+    const dataSourceId = await getDataSourceId();
+
+    const response = await notion.dataSources.query({
+      data_source_id: dataSourceId,
+      filter: {
+        property: "status",
+        status: { equals: "公開済み" },
+      },
+      sorts: [{ property: "publicationDate", direction: "descending" }],
+      page_size: 100,
     });
 
     return response.results.filter(isPage);
@@ -216,7 +229,7 @@ export type CategoryInfo = { displayName: string; slug: string; raw: string };
 
 export const fetchActiveCategories = cache(
   async (): Promise<CategoryInfo[]> => {
-    const pages = await fetchPages(100);
+    const pages = await fetchAllPublishedPages();
     const seen = new Map<string, CategoryInfo>();
     for (const page of pages) {
       const raw = getRawCategory(page);
@@ -229,11 +242,13 @@ export const fetchActiveCategories = cache(
 );
 
 export async function fetchPageWithBlocks(pageId: string) {
-  const result = await notion.pages.retrieve({ page_id: pageId });
+  const [result, blocks] = await Promise.all([
+    notion.pages.retrieve({ page_id: pageId }),
+    fetchBlocksWithChildren(pageId),
+  ]);
   if (!isPage(result)) {
     throw new Error(`Page not found: ${pageId}`);
   }
-  const blocks = await fetchBlocksWithChildren(pageId);
   return { page: result, blocks };
 }
 
