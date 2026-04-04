@@ -38,10 +38,11 @@ function getFileUrl(
     : notionFileProxyUrl(blockId);
 }
 
+const YOUTUBE_RE =
+  /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/;
+
 function extractYouTubeId(url: string): string | null {
-  const match = url.match(
-    /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/,
-  );
+  const match = url.match(YOUTUBE_RE);
   return match?.[1] ?? null;
 }
 
@@ -87,55 +88,44 @@ function NotionBlock({
       );
 
     case "heading_1":
-      if (block.heading_1.is_toggleable) {
-        return (
-          <details className="mt-12 mb-6 lg:mt-16">
-            <summary className="cursor-pointer list-none text-2xl before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90">
-              <RichText items={block.heading_1.rich_text} />
-            </summary>
-            <ChildBlocks block={block} className="mt-4" />
-          </details>
-        );
-      }
-      return (
-        <h2 id={block.id} className="mt-12 mb-6 text-2xl lg:mt-16">
-          <RichText items={block.heading_1.rich_text} />
-        </h2>
-      );
-
     case "heading_2":
-      if (block.heading_2.is_toggleable) {
-        return (
-          <details className="mt-12 mb-6 lg:mt-16">
-            <summary className="cursor-pointer list-none text-2xl before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90">
-              <RichText items={block.heading_2.rich_text} />
-            </summary>
-            <ChildBlocks block={block} className="mt-4" />
-          </details>
-        );
-      }
-      return (
-        <h2 id={block.id} className="mt-12 mb-6 text-2xl lg:mt-16">
-          <RichText items={block.heading_2.rich_text} />
-        </h2>
-      );
+    case "heading_3": {
+      const headingMap = {
+        heading_1: { tag: "h2" as const, textClass: "text-2xl" },
+        heading_2: { tag: "h2" as const, textClass: "text-2xl" },
+        heading_3: { tag: "h3" as const, textClass: "text-xl" },
+      };
+      const { tag: Tag, textClass } = headingMap[block.type];
+      const headingData =
+        block.type === "heading_1"
+          ? block.heading_1
+          : block.type === "heading_2"
+            ? block.heading_2
+            : block.heading_3;
+      const richText = headingData.rich_text;
 
-    case "heading_3":
-      if (block.heading_3.is_toggleable) {
+      if (headingData.is_toggleable) {
         return (
           <details className="mt-12 mb-6 lg:mt-16">
-            <summary className="cursor-pointer list-none text-xl before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90">
-              <RichText items={block.heading_3.rich_text} />
+            <summary
+              className={cn(
+                "cursor-pointer list-none",
+                textClass,
+                "before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90",
+              )}
+            >
+              <RichText items={richText} />
             </summary>
             <ChildBlocks block={block} className="mt-4" />
           </details>
         );
       }
       return (
-        <h3 id={block.id} className="mt-12 mb-6 text-xl lg:mt-16">
-          <RichText items={block.heading_3.rich_text} />
-        </h3>
+        <Tag id={block.id} className={cn("mt-12 mb-6 lg:mt-16", textClass)}>
+          <RichText items={richText} />
+        </Tag>
       );
+    }
 
     case "bulleted_list_item":
       return (
@@ -159,14 +149,15 @@ function NotionBlock({
 
       return (
         <figure className="my-8">
-          <Image
-            src={imageUrl}
-            alt={caption.map((c) => c.plain_text).join("") || ""}
-            className="w-full"
-            width={800}
-            height={450}
-            sizes="(max-width: 768px) 100vw, 800px"
-          />
+          <div className="relative aspect-video w-full">
+            <Image
+              src={imageUrl}
+              alt={caption.map((c) => c.plain_text).join("") || ""}
+              fill
+              sizes="(max-width: 768px) 100vw, 800px"
+              className="object-cover"
+            />
+          </div>
           {caption.length > 0 && (
             <figcaption className="mt-2 text-xs">
               <RichText items={caption} />
@@ -461,7 +452,6 @@ function NotionBlock({
 
       return (
         <figure className="my-8">
-          {}
           <audio src={audioUrl} controls className="w-full" />
           {audioCaption.length > 0 && (
             <figcaption className="mt-2 text-xs">

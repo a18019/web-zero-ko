@@ -14,35 +14,38 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
     }
   };
 
+  const shareLinks = [
+    {
+      href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+      label: "Xでシェア",
+      icon: "/x.svg",
+    },
+    {
+      href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      label: "Facebookでシェア",
+      icon: "/facebook.svg",
+    },
+    {
+      href: `https://social-plugins.line.me/lineit/share?url=${encodedUrl}`,
+      label: "LINEでシェア",
+      icon: "/line.svg",
+    },
+  ];
+
   return (
     <div className="flex gap-2">
-      <a
-        href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex size-12 items-center justify-center"
-        aria-label="Xでシェア"
-      >
-        <Image src="/x.svg" alt="" width={20} height={20} />
-      </a>
-      <a
-        href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex size-12 items-center justify-center"
-        aria-label="Facebookでシェア"
-      >
-        <Image src="/facebook.svg" alt="" width={20} height={20} />
-      </a>
-      <a
-        href={`https://social-plugins.line.me/lineit/share?url=${encodedUrl}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex size-12 items-center justify-center"
-        aria-label="LINEでシェア"
-      >
-        <Image src="/line.svg" alt="" width={20} height={20} />
-      </a>
+      {shareLinks.map((link) => (
+        <a
+          key={link.icon}
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex size-12 items-center justify-center"
+          aria-label={link.label}
+        >
+          <Image src={link.icon} alt="" width={20} height={20} />
+        </a>
+      ))}
       <button
         type="button"
         onClick={handleCopyLink}
