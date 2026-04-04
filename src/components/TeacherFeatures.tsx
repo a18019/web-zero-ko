@@ -50,9 +50,9 @@ export default function TeacherFeatures() {
               className="aspect-video w-full object-cover"
             />
             <div className="mt-4 px-6">
-              <p className="text-[12px]">{teacher.role}</p>
-              <p className="mt-2 text-[20px]">{teacher.name}</p>
-              <p className="mt-2 line-clamp-4 text-[14px]">{teacher.bio}</p>
+              <p className="text-xs">{teacher.role}</p>
+              <p className="mt-2 text-xl">{teacher.name}</p>
+              <p className="mt-2 line-clamp-4 text-sm">{teacher.bio}</p>
             </div>
           </Link>
         </li>

@@ -60,7 +60,7 @@ export default function Footer() {
               <li key={footerLink.label} className="grid place-items-center">
                 <Link
                   href={footerLink.href}
-                  className="text-[12px]"
+                  className="text-xs"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -70,7 +70,7 @@ export default function Footer() {
             ))}
           </ul>
         </nav>
-        <small className="text-[12px]">© Zero Education & Arts.</small>
+        <small className="text-xs">© Zero Education & Arts.</small>
       </div>
     </footer>
   );

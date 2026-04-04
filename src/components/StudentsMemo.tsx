@@ -30,11 +30,11 @@ export default async function StudentsMemo() {
               className="h-full w-full object-cover"
             />
             <div className="to-foreground/60 absolute right-0 bottom-0 left-0 bg-linear-to-b from-transparent p-6 text-white">
-              <span className="text-foreground flex-none rounded-full bg-white px-[6px] py-[3px] text-[10px]">
+              <span className="text-foreground flex-none rounded-full bg-white px-[6px] py-[3px] text-[0.625rem]">
                 {getCategory(page)}
               </span>
-              <p className="mt-2 line-clamp-3 text-[24px]">{getTitle(page)}</p>
-              <p className="mt-2 text-[14px]">{getPublicationDate(page)}</p>
+              <p className="mt-2 line-clamp-3 text-2xl">{getTitle(page)}</p>
+              <p className="mt-2 text-sm">{getPublicationDate(page)}</p>
             </div>
           </Link>
         </li>

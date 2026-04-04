@@ -48,14 +48,12 @@ export function BookmarkCard({
       >
         <div className="flex min-w-0 flex-1 flex-col justify-center gap-1 p-4">
           {ogp?.title && (
-            <p className="truncate text-[14px] font-medium">{ogp.title}</p>
+            <p className="truncate text-sm font-medium">{ogp.title}</p>
           )}
           {ogp?.description && (
-            <p className="text-muted line-clamp-2 text-[12px]">
-              {ogp.description}
-            </p>
+            <p className="text-muted line-clamp-2 text-xs">{ogp.description}</p>
           )}
-          <div className="text-muted flex items-center gap-1.5 text-[12px]">
+          <div className="text-muted flex items-center gap-1.5 text-xs">
             {ogp?.favicon && (
               <Image
                 src={ogp.favicon}
@@ -83,7 +81,7 @@ export function BookmarkCard({
           </div>
         )}
       </a>
-      {caption && <p className="text-muted mt-1 text-[14px]">{caption}</p>}
+      {caption && <p className="text-muted mt-1 text-sm">{caption}</p>}
     </div>
   );
 }

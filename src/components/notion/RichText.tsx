@@ -67,13 +67,13 @@ function RichTextItem({ item }: { item: RichTextItemResponse }) {
       annotations.strikethrough && "line-through",
       annotations.underline && "underline",
       annotations.code &&
-        "rounded bg-gray-100 px-1.5 py-0.5 font-mono text-[14px] text-red-600",
+        "rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm text-red-600",
       annotations.color && colorMap[annotations.color],
     ) || undefined;
 
   if (item.type === "equation") {
     return (
-      <code className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-[14px]">
+      <code className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm">
         {item.equation.expression}
       </code>
     );

@@ -30,13 +30,13 @@ export default async function FeaturedContent() {
               className="aspect-video w-full object-cover"
             />
             <div className="flex flex-1 flex-col justify-around px-6 pt-6 pb-8 lg:px-8 lg:pt-12 lg:pb-16">
-              <p className="text-[14px]">{getCategory(first)}</p>
-              <p className="mt-4 line-clamp-3 text-[20px]">{getTitle(first)}</p>
+              <p className="text-sm">{getCategory(first)}</p>
+              <p className="mt-4 line-clamp-3 text-xl">{getTitle(first)}</p>
             </div>
           </Link>
         )}
         <div className="flex flex-col gap-4">
-          <p className="text-[14px]">注目のコンテンツ</p>
+          <p className="text-sm">注目のコンテンツ</p>
           <div className="flex flex-1 flex-col justify-end gap-6">
             {rest.map((page, i) => (
               <Link
@@ -45,10 +45,8 @@ export default async function FeaturedContent() {
                 className={`border-muted overflow-hidden rounded-3xl border px-6 pt-6 pb-8 ${i === 1 ? "bg-surface" : ""}`}
               >
                 <div>
-                  <p className="text-[14px]">{getCategory(page)}</p>
-                  <p className="mt-4 line-clamp-3 text-[20px]">
-                    {getTitle(page)}
-                  </p>
+                  <p className="text-sm">{getCategory(page)}</p>
+                  <p className="mt-4 line-clamp-3 text-xl">{getTitle(page)}</p>
                 </div>
               </Link>
             ))}

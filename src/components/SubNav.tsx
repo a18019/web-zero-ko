@@ -14,7 +14,7 @@ export default function SubNav() {
     <div className="group z-subnav bg-background shadow-foreground sticky top-0 grid h-12 grid-cols-[auto_1fr] items-center justify-between drop-shadow-[0_3px_2px]/10">
       <Link
         href="/"
-        className="z-subnav-foreground relative grid h-12 place-items-center px-4 text-[16px] font-bold"
+        className="z-subnav-foreground relative grid h-12 place-items-center px-4 text-base font-bold"
       >
         Zero Journal
       </Link>
@@ -37,7 +37,7 @@ export default function SubNav() {
             >
               <Link
                 href={navLink.href}
-                className="flex h-12 items-center pl-12 text-[14px]"
+                className="flex h-12 items-center pl-12 text-sm"
               >
                 {navLink.label}
               </Link>

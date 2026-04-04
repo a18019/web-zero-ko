@@ -13,7 +13,7 @@ export default async function ArticleList() {
   return (
     <section>
       <div className="w-inner mx-auto max-w-[1128px]">
-        <h2 className="text-[32px] lg:text-[48px]">記事を見る</h2>
+        <h2 className="text-[2rem] lg:text-5xl">記事を見る</h2>
         <div className="mt-12 grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-8 lg:gap-12">
           {pages.map((page) => (
             <Link
@@ -22,8 +22,8 @@ export default async function ArticleList() {
               className="grid grid-cols-[1fr_25%] items-center gap-8"
             >
               <div className="flex flex-col gap-2">
-                <p className="text-[14px]">{getCategory(page)}</p>
-                <p className="line-clamp-2 text-[16px] lg:line-clamp-1 lg:text-[20px]">
+                <p className="text-sm">{getCategory(page)}</p>
+                <p className="line-clamp-2 text-base lg:line-clamp-1 lg:text-xl">
                   {getTitle(page)}
                 </p>
               </div>
@@ -39,7 +39,7 @@ export default async function ArticleList() {
         </div>
         <Link
           href="/articles"
-          className="border-foreground mx-auto mt-12 grid h-12 w-fit place-items-center rounded-full border px-6 text-[16px]"
+          className="border-foreground mx-auto mt-12 grid h-12 w-fit place-items-center rounded-full border px-6 text-base"
         >
           もっと見る
         </Link>

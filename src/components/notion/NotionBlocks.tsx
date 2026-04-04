@@ -81,7 +81,7 @@ function NotionBlock({
   switch (block.type) {
     case "paragraph":
       return (
-        <p className="mb-6 text-[16px]">
+        <p className="mb-6 text-base">
           <RichText items={block.paragraph.rich_text} />
         </p>
       );
@@ -90,7 +90,7 @@ function NotionBlock({
       if (block.heading_1.is_toggleable) {
         return (
           <details className="mt-12 mb-6 lg:mt-16">
-            <summary className="cursor-pointer list-none text-[24px] before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90">
+            <summary className="cursor-pointer list-none text-2xl before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90">
               <RichText items={block.heading_1.rich_text} />
             </summary>
             <ChildBlocks block={block} className="mt-4" />
@@ -98,7 +98,7 @@ function NotionBlock({
         );
       }
       return (
-        <h2 id={block.id} className="mt-12 mb-6 text-[24px] lg:mt-16">
+        <h2 id={block.id} className="mt-12 mb-6 text-2xl lg:mt-16">
           <RichText items={block.heading_1.rich_text} />
         </h2>
       );
@@ -107,7 +107,7 @@ function NotionBlock({
       if (block.heading_2.is_toggleable) {
         return (
           <details className="mt-12 mb-6 lg:mt-16">
-            <summary className="cursor-pointer list-none text-[24px] before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90">
+            <summary className="cursor-pointer list-none text-2xl before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90">
               <RichText items={block.heading_2.rich_text} />
             </summary>
             <ChildBlocks block={block} className="mt-4" />
@@ -115,7 +115,7 @@ function NotionBlock({
         );
       }
       return (
-        <h2 id={block.id} className="mt-12 mb-6 text-[24px] lg:mt-16">
+        <h2 id={block.id} className="mt-12 mb-6 text-2xl lg:mt-16">
           <RichText items={block.heading_2.rich_text} />
         </h2>
       );
@@ -124,7 +124,7 @@ function NotionBlock({
       if (block.heading_3.is_toggleable) {
         return (
           <details className="mt-12 mb-6 lg:mt-16">
-            <summary className="cursor-pointer list-none text-[20px] before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90">
+            <summary className="cursor-pointer list-none text-xl before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90">
               <RichText items={block.heading_3.rich_text} />
             </summary>
             <ChildBlocks block={block} className="mt-4" />
@@ -132,7 +132,7 @@ function NotionBlock({
         );
       }
       return (
-        <h3 id={block.id} className="mt-12 mb-6 text-[20px] lg:mt-16">
+        <h3 id={block.id} className="mt-12 mb-6 text-xl lg:mt-16">
           <RichText items={block.heading_3.rich_text} />
         </h3>
       );
@@ -168,7 +168,7 @@ function NotionBlock({
             sizes="(max-width: 768px) 100vw, 800px"
           />
           {caption.length > 0 && (
-            <figcaption className="mt-2 text-[12px]">
+            <figcaption className="mt-2 text-xs">
               <RichText items={caption} />
             </figcaption>
           )}
@@ -190,7 +190,7 @@ function NotionBlock({
       if (icon) {
         switch (icon.type) {
           case "emoji":
-            iconElement = <span className="text-[20px]">{icon.emoji}</span>;
+            iconElement = <span className="text-xl">{icon.emoji}</span>;
             break;
           case "external":
             iconElement = (
@@ -226,14 +226,14 @@ function NotionBlock({
 
       return (
         <div className="bg-surface overflow-hidden">
-          <div className="text-muted px-4 py-1.5 text-[12px]">
+          <div className="text-muted px-4 py-1.5 text-xs">
             {block.code.language}
           </div>
           <pre className="overflow-x-auto p-4">
-            <code className="font-mono text-[14px]">{codeText}</code>
+            <code className="font-mono text-sm">{codeText}</code>
           </pre>
           {block.code.caption.length > 0 && (
-            <div className="text-muted px-4 py-1.5 text-[14px]">
+            <div className="text-muted px-4 py-1.5 text-sm">
               <RichText items={block.code.caption} />
             </div>
           )}
@@ -328,7 +328,7 @@ function NotionBlock({
                 <li key={h.id} style={{ paddingLeft: `${level * 1.25}rem` }}>
                   <a
                     href={`#${h.id}`}
-                    className="text-articles-link text-[14px] hover:underline"
+                    className="text-articles-link text-sm hover:underline"
                   >
                     {text.map((t) => t.plain_text).join("")}
                   </a>
@@ -372,7 +372,7 @@ function NotionBlock({
             <video src={videoUrl} controls className="max-w-full" />
           )}
           {videoCaption.length > 0 && (
-            <figcaption className="mt-2 text-[12px]">
+            <figcaption className="mt-2 text-xs">
               <RichText items={videoCaption} />
             </figcaption>
           )}
@@ -447,7 +447,7 @@ function NotionBlock({
             {fileName}
           </a>
           {fileCaption.length > 0 && (
-            <p className="text-muted mt-1 text-[14px]">
+            <p className="text-muted mt-1 text-sm">
               <RichText items={fileCaption} />
             </p>
           )}
@@ -464,7 +464,7 @@ function NotionBlock({
           {}
           <audio src={audioUrl} controls className="w-full" />
           {audioCaption.length > 0 && (
-            <figcaption className="mt-2 text-[12px]">
+            <figcaption className="mt-2 text-xs">
               <RichText items={audioCaption} />
             </figcaption>
           )}
@@ -484,7 +484,7 @@ function NotionBlock({
             className="h-[600px] w-full"
           />
           {pdfCaption.length > 0 && (
-            <figcaption className="mt-2 text-[12px]">
+            <figcaption className="mt-2 text-xs">
               <RichText items={pdfCaption} />
             </figcaption>
           )}
@@ -497,7 +497,7 @@ function NotionBlock({
 
     case "unsupported":
       return (
-        <div className="bg-surface text-muted p-3 text-[14px]">
+        <div className="bg-surface text-muted p-3 text-sm">
           未対応ブロック ({block.unsupported.block_type})
         </div>
       );

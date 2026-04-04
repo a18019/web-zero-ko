@@ -28,6 +28,20 @@
   --z-index-subnav-menu: 4;
 
   --width-inner: calc(20 / 27 * (100vw - 360px) + 328px);
+
+  --text-xs--line-height: 1.6;
+  --text-sm--line-height: 1.6;
+  --text-base--line-height: 1.6;
+  --text-lg--line-height: 1.6;
+  --text-xl--line-height: 1.6;
+  --text-2xl--line-height: 1.6;
+  --text-3xl--line-height: 1.6;
+  --text-4xl--line-height: 1.6;
+  --text-5xl--line-height: 1.6;
+  --text-6xl--line-height: 1.6;
+  --text-7xl--line-height: 1.6;
+  --text-8xl--line-height: 1.6;
+  --text-9xl--line-height: 1.6;
 }
 
 body {
