@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { FacebookIcon, LineIcon, LinkIcon, XIcon } from "@/components/Icons";
 
 export function ShareButtons({ url, title }: { url: string; title: string }) {
   const encodedUrl = encodeURIComponent(url);
@@ -18,17 +18,17 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
     {
       href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
       label: "Xでシェア",
-      icon: "/x.svg",
+      icon: XIcon,
     },
     {
       href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
       label: "Facebookでシェア",
-      icon: "/facebook.svg",
+      icon: FacebookIcon,
     },
     {
       href: `https://social-plugins.line.me/lineit/share?url=${encodedUrl}`,
       label: "LINEでシェア",
-      icon: "/line.svg",
+      icon: LineIcon,
     },
   ];
 
@@ -36,14 +36,14 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
     <div className="flex gap-2">
       {shareLinks.map((link) => (
         <a
-          key={link.icon}
+          key={link.label}
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
           className="flex size-12 items-center justify-center"
           aria-label={link.label}
         >
-          <Image src={link.icon} alt="" width={20} height={20} />
+          <link.icon aria-hidden="true" className="size-5" />
         </a>
       ))}
       <button
@@ -52,7 +52,7 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
         className="flex size-12 items-center justify-center"
         aria-label="リンクをコピー"
       >
-        <Image src="/link.svg" alt="" width={20} height={20} />
+        <LinkIcon aria-hidden="true" className="size-5" />
       </button>
     </div>
   );

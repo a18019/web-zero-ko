@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { HeaderLogoIcon } from "./Icons";
 import MenuToggle from "./MenuToggle";
 
 const mobileNavLinks = [
@@ -40,12 +40,9 @@ export default function Header() {
           rel="noopener noreferrer"
           className="h-8 shrink-0 px-2 opacity-100 transition-[opacity,visibility] group-has-[:popover-open]:invisible group-has-[:popover-open]:opacity-0 lg:h-6 lg:p-0"
         >
-          <Image
-            src="/header-logo.svg"
-            alt="ゼロ高等学院 ZERO HIGH SCHOOL"
-            width={168}
-            height={32}
+          <HeaderLogoIcon
             className="h-full w-auto"
+            aria-label="ゼロ高等学院 ZERO HIGH SCHOOL"
           />
         </a>
         <MenuToggle targetId="mobile-nav" />
@@ -54,7 +51,7 @@ export default function Header() {
           popover="auto"
           className="bg-surface fixed inset-x-0 top-12 m-0 h-[calc(100dvh-48px)] max-h-none w-dvw max-w-none overflow-y-auto transition-[display,overlay,clip-path] transition-discrete [clip-path:inset(0_0_100%_0)] open:[clip-path:inset(0_0_0_0)] lg:hidden starting:open:[clip-path:inset(0_0_100%_0)]"
         >
-          <ul className="flex flex-col gap-2 pt-8 pb-16">
+          <ul className="flex flex-col gap-4 pt-8 pb-16">
             {mobileNavLinks.map((navLink) => (
               <li key={navLink.label}>
                 <a

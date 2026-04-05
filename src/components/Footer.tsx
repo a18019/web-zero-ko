@@ -1,24 +1,31 @@
-import Image from "next/image";
 import Link from "next/link";
 
+import {
+  FacebookIcon,
+  InstagramIcon,
+  LineIcon,
+  XIcon,
+  YoutubeIcon,
+} from "@/components/Icons";
+
 const socialLinks = [
-  { label: "X", href: "https://x.com/zero_highschool/", icon: "/x.svg" },
+  { label: "X", href: "https://x.com/zero_highschool/", icon: XIcon },
   {
     label: "Instagram",
     href: "https://www.instagram.com/zero_highschool_official",
-    icon: "/instagram.svg",
+    icon: InstagramIcon,
   },
   {
     label: "YouTube",
     href: "https://www.youtube.com/channel/UCi89abQwUMkMqi41aFbsHdA",
-    icon: "/youtube.svg",
+    icon: YoutubeIcon,
   },
   {
     label: "Facebook",
     href: "https://www.facebook.com/zerokofacebook/?locale=ja_JP",
-    icon: "/facebook.svg",
+    icon: FacebookIcon,
   },
-  { label: "LINE", href: "#", icon: "/line.svg" },
+  { label: "LINE", href: "#", icon: LineIcon },
 ];
 
 const footerLinks = [
@@ -43,12 +50,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="grid size-12 place-items-center"
                 >
-                  <Image
-                    src={socialLink.icon}
-                    alt={socialLink.label}
-                    width={16}
-                    height={16}
-                  />
+                  <socialLink.icon aria-hidden="true" className="size-4" />
                 </a>
               </li>
             ))}
