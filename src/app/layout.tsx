@@ -2,6 +2,7 @@ import Cta from "@/components/Cta";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import SubNav from "@/components/SubNav";
+import { fetchActiveCategories } from "@/lib/notion";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { BIZ_UDPGothic, Inter } from "next/font/google";
@@ -24,16 +25,18 @@ export const metadata: Metadata = {
     "ゼロ高等学院の学び、学校生活、イベント情報を紹介する公式サイト。",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const categories = await fetchActiveCategories();
+
   return (
     <html lang="ja" className={cn(inter.variable, bizUdpGothic.variable)}>
       <body className="antialiased">
         <Header />
-        <SubNav />
+        <SubNav categories={categories} />
         {children}
         <Cta />
         <Footer />
