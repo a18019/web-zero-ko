@@ -11,7 +11,7 @@ export default function Slider({
         <h2 className="text-[2rem] lg:text-5xl">{title}</h2>
       </div>
       <div className="relative">
-        <ul className="flex snap-x snap-mandatory scroll-pl-[calc(7/54*(100vw-360px)+16px)] gap-4 overflow-x-auto px-[calc(7/54*(100vw-360px)+16px)] py-12 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <ul className="scroll-pl-outer px-outer scrollbar-none flex snap-x snap-mandatory gap-4 overflow-x-auto py-12">
           {children}
         </ul>
       </div>

@@ -43,7 +43,7 @@ async function ArticleDetail({ slug }: { slug: string }) {
   return (
     <div>
       <article className="pt-12 pb-16 lg:pt-24">
-        <div className="w-inner mx-auto max-w-[552px]">
+        <div className="w-inner mx-auto max-w-[744px]">
           <h1 className="text-[2rem]">{title}</h1>
           {publicationDate && <p className="mt-6 text-sm">{publicationDate}</p>}
           {author && <p className="mt-6 text-sm">{author}</p>}
@@ -82,7 +82,7 @@ async function CategoryArchive({ slug }: { slug: string }) {
               <li key={page.id}>
                 <Link
                   href={`/articles/${page.id}`}
-                  className="border-muted block overflow-hidden rounded-[24px] border"
+                  className="bg-background drop-shadow-card block overflow-hidden rounded-[24px]"
                 >
                   <div className="relative aspect-video w-full">
                     <Image

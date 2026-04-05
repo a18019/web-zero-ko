@@ -31,7 +31,7 @@ export default async function FeaturedContent() {
                 className="object-cover"
               />
             </div>
-            <div className="flex flex-1 flex-col justify-around px-6 pt-6 pb-8 lg:px-8 lg:pt-12 lg:pb-16">
+            <div className="flex grow flex-col justify-around px-6 pt-6 pb-8 lg:px-8 lg:pt-12 lg:pb-16">
               <p className="text-sm">{getCategory(first)}</p>
               <p className="mt-4 line-clamp-3 text-xl">{getTitle(first)}</p>
             </div>
@@ -39,7 +39,7 @@ export default async function FeaturedContent() {
         )}
         <div className="flex flex-col gap-4">
           <p className="text-sm">注目のコンテンツ</p>
-          <div className="flex flex-1 flex-col justify-end gap-6">
+          <div className="flex grow flex-col justify-end gap-6">
             {rest.map((page, i) => (
               <Link
                 key={page.id}

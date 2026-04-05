@@ -23,7 +23,7 @@ export default function Cta() {
             href="https://www.zero-ko.com/request/"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-accent-lime text-accent-navy mt-6 mr-auto inline-flex h-[48px] items-center justify-center rounded-full px-6 text-base"
+            className="bg-accent-lime text-accent-navy mt-6 mr-auto inline-flex h-[48px] items-center justify-center rounded-full px-6 text-base font-bold"
           >
             無料で申し込む
           </a>

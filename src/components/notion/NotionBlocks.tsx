@@ -148,16 +148,15 @@ function NotionBlock({
       const caption = "caption" in block.image ? block.image.caption : [];
 
       return (
-        <figure className="my-8">
-          <div className="relative aspect-video w-full">
-            <Image
-              src={imageUrl}
-              alt={caption.map((c) => c.plain_text).join("") || ""}
-              fill
-              sizes="(max-width: 768px) 100vw, 800px"
-              className="object-cover"
-            />
-          </div>
+        <figure className="mx-auto my-8 max-w-[552px]">
+          <Image
+            src={imageUrl}
+            alt={caption.map((c) => c.plain_text).join("") || ""}
+            width={0}
+            height={0}
+            sizes="(max-width: 552px) 100vw, 552px"
+            className="h-auto w-full"
+          />
           {caption.length > 0 && (
             <figcaption className="mt-2 text-xs">
               <RichText items={caption} />

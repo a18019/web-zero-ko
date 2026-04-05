@@ -34,7 +34,7 @@ export default async function ArticlesPage() {
               <li key={page.id}>
                 <Link
                   href={`/articles/${page.id}`}
-                  className="border-muted block overflow-hidden rounded-[24px] border"
+                  className="bg-background drop-shadow-card flex h-full flex-col overflow-hidden rounded-[24px]"
                 >
                   <div className="relative aspect-video w-full">
                     <Image
@@ -44,10 +44,12 @@ export default async function ArticlesPage() {
                       className="object-cover"
                     />
                   </div>
-                  <div className="flex flex-col gap-4 px-6 pt-6 pb-8">
+                  <div className="flex grow flex-col gap-4 px-6 pt-6 pb-8">
                     <p className="text-sm">{getCategory(page)}</p>
                     <p className="line-clamp-3 text-xl">{getTitle(page)}</p>
-                    <p className="text-xs">{getPublicationDate(page)}</p>
+                    <p className="mt-auto text-xs">
+                      {getPublicationDate(page)}
+                    </p>
                   </div>
                 </Link>
               </li>
