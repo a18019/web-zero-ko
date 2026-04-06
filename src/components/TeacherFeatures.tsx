@@ -38,11 +38,11 @@ export default function TeacherFeatures() {
   return (
     <Slider title="講師のノート">
       {teachers.map((teacher, i) => (
-        <li key={teacher.name} className="flex-none snap-start">
+        <li key={teacher.name} className="flex-none snap-center sm:snap-start">
           <Link
             href={teacher.href}
             className={cn(
-              "drop-shadow-card block aspect-4/5 w-[80vw] max-w-90 overflow-hidden rounded-3xl",
+              "drop-shadow-card block aspect-4/5 w-[84vw] max-w-90 overflow-hidden rounded-3xl",
               i % 2 === 1 ? "bg-surface" : "bg-background",
             )}
           >

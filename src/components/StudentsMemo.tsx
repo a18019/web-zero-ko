@@ -17,10 +17,10 @@ export default async function StudentsMemo() {
   return (
     <Slider title="生徒のメモ">
       {pages.map((page) => (
-        <li key={page.id} className="flex-none snap-start">
+        <li key={page.id} className="flex-none snap-center sm:snap-start">
           <Link
             href={`/articles/${page.id}`}
-            className="drop-shadow-card bg-background relative block aspect-4/5 w-[80vw] max-w-90 overflow-hidden rounded-3xl"
+            className="drop-shadow-card bg-background relative block aspect-4/5 w-[84vw] max-w-90 overflow-hidden rounded-3xl"
           >
             <Image
               src={getStudentsMemoUrl(page, "/no-image.png")}

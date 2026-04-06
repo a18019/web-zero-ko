@@ -17,7 +17,7 @@ export default async function FeaturedContent() {
 
   return (
     <section>
-      <div className="w-inner mx-auto grid max-w-[1128px] grid-cols-[1fr] gap-6 lg:grid-cols-[1fr_1fr]">
+      <div className="w-content-0-sm sm:w-content-sm-lg lg:w-content-lg mx-auto grid max-w-282 grid-cols-[1fr] gap-6 lg:grid-cols-[1fr_1fr]">
         {first && (
           <Link
             href={`/articles/${first.id}`}
@@ -49,7 +49,7 @@ export default async function FeaturedContent() {
                   i === 1 ? "bg-surface" : "bg-background",
                 )}
               >
-                <div className="relative hidden aspect-video h-20 lg:block">
+                <div className="relative hidden aspect-video h-20 md:block">
                   <Image
                     src={getThumbnailUrl(page) || "/no-image.png"}
                     fill
