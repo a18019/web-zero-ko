@@ -32,7 +32,7 @@ const pcNavButtons = [
 
 export default function Header() {
   return (
-    <header className="bg-surface">
+    <header className="bg-surface z-header relative">
       <div className="group lg:w-inner mx-auto flex h-12 max-w-[1128px] items-center justify-between">
         <a
           href="https://www.zero-ko.com/"
