@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   FacebookIcon,
   InstagramIcon,
-  LineIcon,
   XIcon,
   YoutubeIcon,
 } from "@/components/Icons";
@@ -25,7 +24,6 @@ const socialLinks = [
     href: "https://www.facebook.com/zerokofacebook/?locale=ja_JP",
     icon: FacebookIcon,
   },
-  { label: "LINE", href: "#", icon: LineIcon },
 ];
 
 const footerLinks = [
@@ -38,10 +36,10 @@ const footerLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-surface py-4 lg:py-2">
-      <div className="w-inner mx-auto grid max-w-[1128px] grid-cols-1 grid-rows-3 items-center gap-6 lg:grid-cols-[1fr_auto_auto] lg:grid-rows-1">
+    <footer className="bg-surface py-4 sm:py-2">
+      <div className="w-content-0-sm lg:w-content-lg mx-auto grid max-w-[1128px] grid-cols-1 grid-rows-3 items-center gap-6 sm:mx-4 sm:w-auto sm:grid-cols-[1fr_auto_auto] sm:grid-rows-1 sm:gap-8 lg:mx-auto">
         <nav>
-          <ul className="-ml-4 flex">
+          <ul className="flex">
             {socialLinks.map((socialLink) => (
               <li key={socialLink.label}>
                 <a
@@ -50,7 +48,7 @@ export default function Footer() {
                   rel="noopener noreferrer"
                   className="grid size-12 place-items-center"
                 >
-                  <socialLink.icon aria-hidden="true" className="size-4" />
+                  <socialLink.icon aria-hidden="true" className="w-6" />
                 </a>
               </li>
             ))}

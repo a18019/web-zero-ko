@@ -39,7 +39,7 @@ async function ArticleDetail({ slug }: { slug: string }) {
   return (
     <div>
       <article className="pt-12 pb-16 lg:pt-24">
-        <div className="w-inner mx-auto max-w-[744px]">
+        <div className="w-content mx-auto max-w-[744px]">
           <h1 className="text-[2rem]">{title}</h1>
           {publicationDate && <p className="mt-6 text-sm">{publicationDate}</p>}
           {author && <p className="mt-6 text-sm">{author}</p>}

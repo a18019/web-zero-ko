@@ -17,7 +17,7 @@ export default function SubNavToggle({ targetId }: { targetId: string }) {
 
   return (
     <button
-      className="relative z-1 grid size-12 place-items-center lg:hidden"
+      className="relative z-1 grid size-12 place-items-center md:hidden"
       popoverTarget={targetId}
       aria-label="メニュー"
       aria-expanded={open}

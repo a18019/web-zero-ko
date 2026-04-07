@@ -1,4 +1,5 @@
 import type { CategoryInfo } from "@/lib/notion";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 type Props = {
@@ -7,11 +8,12 @@ type Props = {
 };
 
 function pillClass(isActive: boolean): string {
-  return `rounded-full border px-4 py-2 text-sm transition-colors ${
+  return cn(
+    "rounded-full border px-4 py-2 text-sm transition-colors",
     isActive
       ? "bg-foreground text-background border-foreground"
-      : "border-muted hover:border-foreground"
-  }`;
+      : "border-muted hover:border-foreground",
+  );
 }
 
 export function CategoryNav({ categories, activeSlug }: Props) {

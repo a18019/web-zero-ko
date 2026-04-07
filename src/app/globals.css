@@ -24,13 +24,10 @@
   --z-index-header: 9;
   --z-index-subnav: 5;
 
-  --width-inner: calc(20 / 27 * (100vw - 360px) + 328px);
-  --spacing-outer: max((100vw - 1128px) / 2, (100vw - var(--width-inner)) / 2);
-
   /* 304pxから390pxへ 320 304 390 358 */
   --width-content-0-sm: min(calc(27/35 * (100vw - 320px) + 304px), 390px);
   /* 8pxから16px、125pxへ 320 8 390 16 432 21 640 125 */
-  --width-gutter-0-sm: max(
+  --spacing-0-sm: max(
     calc(4/35 * (100vw - 320px) + 8px),
     calc(1/2 * (100vw - 432px) + 21px)
   );
@@ -40,12 +37,14 @@
   --width-content-md-lg: 560px;
   --width-content-sm-lg: min(calc(85/64 * (100vw - 640px) + 390px), 560px);
   /* 125pxから104pxへ 640 125 768 104 */
-  --width-gutter-sm-md: calc(-21/128 * (100vw - 640px) + 125px);
+  --spacing-sm-md: calc(-21/128 * (100vw - 640px) + 125px);
+  /* 560pxに固定 768 104 1024 232 */
+  --spacing-md-lg: calc(1/2 * (100vw - 768px) + 104px);
 
   /* 960pxから1128pxへ 1024 960 1192 1128 */
   --width-content-lg: min(calc(100vw - 1024px + 960px), 1128px);
   /* 1128pxに固定 ガター下限32px 1192 32 1194 33 */
-  --width-gutter-lg: max(calc(1/2 * (100vw - 1192px) + 32px), 32px);
+  --spacing-lg: max(calc(1/2 * (100vw - 1192px) + 32px), 32px);
 
   --text-xs--line-height: 1.6;
   --text-sm--line-height: 1.6;
@@ -81,4 +80,14 @@ body {
 
 body:has(#mobile-subnav:popover-open, #mobile-nav:popover-open) {
   overflow: hidden;
+}
+
+@utility w-content {
+  width: var(--width-content-0-sm);
+  @variant sm {
+    width: var(--width-content-sm-lg);
+  }
+  @variant lg {
+    width: var(--width-content-lg);
+  }
 }

@@ -33,12 +33,12 @@ const pcNavButtons = [
 export default function Header() {
   return (
     <header className="bg-surface z-header relative">
-      <div className="group lg:w-inner mx-auto flex h-12 max-w-[1128px] items-center justify-between">
+      <div className="group lg:w-content-lg mx-auto flex h-12 max-w-[1128px] items-center justify-between">
         <a
           href="https://www.zero-ko.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className="h-8 shrink-0 px-2 opacity-100 transition-[opacity,visibility] group-has-[:popover-open]:invisible group-has-[:popover-open]:opacity-0 lg:h-6 lg:p-0"
+          className="h-8 shrink-0 px-2 opacity-100 transition-[opacity,visibility] [anchor-name:--header] group-has-[:popover-open]:invisible group-has-[:popover-open]:opacity-0 lg:h-6 lg:p-0"
         >
           <HeaderLogoIcon
             className="h-full w-auto"
@@ -49,13 +49,13 @@ export default function Header() {
         <nav
           id="mobile-nav"
           popover="auto"
-          className="bg-surface fixed inset-x-0 top-12 m-0 h-[calc(100dvh-48px)] max-h-none w-dvw max-w-none overflow-y-auto transition-[display,overlay,clip-path] transition-discrete [clip-path:inset(0_0_100%_0)] open:[clip-path:inset(0_0_0_0)] lg:hidden starting:open:[clip-path:inset(0_0_100%_0)]"
+          className="bg-surface fixed inset-[anchor(--header_bottom)_0_0_0] h-auto w-auto transition-[display,overlay,clip-path] transition-discrete [clip-path:inset(0_0_100%_0)] open:[clip-path:inset(0_0_0_0)] lg:hidden starting:open:[clip-path:inset(0_0_100%_0)]"
         >
-          <ul className="flex flex-col gap-4 pt-8 pb-16">
+          <ul className="flex flex-col gap-4 overflow-y-auto pt-8 pb-16">
             {mobileNavLinks.map((navLink) => (
               <li key={navLink.label}>
                 <a
-                  className="flex h-12 items-center pl-12 text-2xl"
+                  className="flex h-12 items-center pl-12 text-2xl hover:underline hover:underline-offset-4"
                   href={navLink.href}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -71,7 +71,7 @@ export default function Header() {
             {pcNavLinks.map((navLink) => (
               <li key={navLink.label}>
                 <a
-                  className="text-xs"
+                  className="text-xs hover:underline hover:underline-offset-4"
                   href={navLink.href}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -80,13 +80,10 @@ export default function Header() {
                 </a>
               </li>
             ))}
-            {pcNavButtons.map((navButton, i) => (
-              <li
-                key={navButton.label}
-                className={i < pcNavButtons.length - 1 ? "-mr-4" : ""}
-              >
+            {pcNavButtons.map((navButton) => (
+              <li key={navButton.label} className="-ml-2">
                 <a
-                  className="bg-foreground grid h-6 place-items-center rounded-full px-4 text-xs text-white"
+                  className="bg-foreground text-background grid h-8 place-items-center rounded-full border px-3 text-xs hover:scale-102"
                   href={navButton.href}
                   target="_blank"
                   rel="noopener noreferrer"
