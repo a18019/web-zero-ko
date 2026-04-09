@@ -12,6 +12,7 @@ export const notion = new Client({
 });
 
 export const databaseId = process.env.NOTION_DATABASE_ID!;
+export const instructorDatabaseId = process.env.NOTION_INSTRUCTOR_DATABASE_ID!;
 
 export type BlockWithChildren = BlockObjectResponse & {
   children?: BlockWithChildren[];
@@ -288,4 +289,84 @@ export async function fetchBlocksWithChildren(
   } while (cursor);
 
   return blocks;
+}
+
+/* ── 講師DB ── */
+
+const getInstructorDataSourceId = cache(async (): Promise<string> => {
+  const database = await notion.databases.retrieve({
+    database_id: instructorDatabaseId,
+  });
+  if (!("data_sources" in database)) {
+    throw new Error("講師データベース情報を完全に取得できませんでした。");
+  }
+  const dataSourceId = database.data_sources[0]?.id;
+  if (!dataSourceId) {
+    throw new Error("講師 Notion data source が見つかりません。");
+  }
+  return dataSourceId;
+});
+
+export function getInstructorName(
+  page: PageObjectResponse,
+  fallback = "",
+): string {
+  const prop = page.properties.name;
+  return prop?.type === "rich_text"
+    ? (prop.rich_text[0]?.plain_text ?? fallback)
+    : fallback;
+}
+
+export function getInstructorRole(
+  page: PageObjectResponse,
+  fallback = "",
+): string {
+  const prop = page.properties.role;
+  return prop?.type === "rich_text"
+    ? (prop.rich_text[0]?.plain_text ?? fallback)
+    : fallback;
+}
+
+export function getInstructorThumbnailUrl(
+  page: PageObjectResponse,
+  fallback = "",
+): string {
+  const prop = page.properties.thumbnail;
+  if (prop?.type === "files") {
+    const file = prop.files[0];
+    if (file?.type === "file")
+      return notionPropertyProxyUrl(page.id, "thumbnail");
+    if (file?.type === "external") return file.external.url;
+  }
+  return fallback;
+}
+
+export function getInstructorOrder(page: PageObjectResponse): number {
+  const prop = page.properties.order;
+  return prop?.type === "number" && prop.number != null ? prop.number : 999;
+}
+
+export const fetchInstructors = cache(
+  async (): Promise<PageObjectResponse[]> => {
+    const dataSourceId = await getInstructorDataSourceId();
+
+    const response = await notion.dataSources.query({
+      data_source_id: dataSourceId,
+      sorts: [{ property: "order", direction: "ascending" }],
+      page_size: 100,
+    });
+
+    return response.results.filter(isPage);
+  },
+);
+
+export async function fetchInstructorWithBlocks(pageId: string) {
+  const [result, blocks] = await Promise.all([
+    notion.pages.retrieve({ page_id: pageId }),
+    fetchBlocksWithChildren(pageId),
+  ]);
+  if (!isPage(result)) {
+    throw new Error(`Instructor not found: ${pageId}`);
+  }
+  return { page: result, blocks };
 }

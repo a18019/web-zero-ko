@@ -5,7 +5,7 @@ import SubNav from "@/components/SubNav";
 import { fetchActiveCategories } from "@/lib/notion";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
-import { BIZ_UDPGothic, Inter } from "next/font/google";
+import { BIZ_UDGothic, Inter } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -13,8 +13,8 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const bizUdpGothic = BIZ_UDPGothic({
-  variable: "--font-biz-udp-gothic",
+const bizUdGothic = BIZ_UDGothic({
+  variable: "--font-biz-ud-gothic",
   weight: ["400", "700"],
   subsets: ["latin"],
 });
@@ -33,7 +33,7 @@ export default async function RootLayout({
   const categories = await fetchActiveCategories();
 
   return (
-    <html lang="ja" className={cn(inter.variable, bizUdpGothic.variable)}>
+    <html lang="ja" className={cn(inter.variable, bizUdGothic.variable)}>
       <body className="antialiased">
         <Header />
         <SubNav categories={categories} />

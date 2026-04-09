@@ -82,48 +82,61 @@ function NotionBlock({
   switch (block.type) {
     case "paragraph":
       return (
-        <p className="mb-6 text-base">
+        <p className="mb-6">
           <RichText items={block.paragraph.rich_text} />
         </p>
       );
 
     case "heading_1":
-    case "heading_2":
-    case "heading_3": {
-      const headingMap = {
-        heading_1: { tag: "h2" as const, textClass: "text-2xl" },
-        heading_2: { tag: "h2" as const, textClass: "text-2xl" },
-        heading_3: { tag: "h3" as const, textClass: "text-xl" },
-      };
-      const { tag: Tag, textClass } = headingMap[block.type];
-      const headingData =
-        block.type === "heading_1"
-          ? block.heading_1
-          : block.type === "heading_2"
-            ? block.heading_2
-            : block.heading_3;
-      const richText = headingData.rich_text;
-
-      if (headingData.is_toggleable) {
+    case "heading_2": {
+      const { rich_text, is_toggleable } =
+        block.type === "heading_1" ? block.heading_1 : block.heading_2;
+      if (is_toggleable) {
         return (
           <details className="mt-12 mb-6 lg:mt-16">
             <summary
               className={cn(
-                "cursor-pointer list-none",
-                textClass,
+                "cursor-pointer list-none text-2xl",
                 "before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90",
               )}
             >
-              <RichText items={richText} />
+              <RichText items={rich_text} />
             </summary>
             <ChildBlocks block={block} className="mt-4" />
           </details>
         );
       }
       return (
-        <Tag id={block.id} className={cn("mt-12 mb-6 lg:mt-16", textClass)}>
-          <RichText items={richText} />
-        </Tag>
+        <h2
+          id={block.id}
+          className="mt-12 mb-6 text-2xl lg:mt-16 lg:text-[2rem]"
+        >
+          <RichText items={rich_text} />
+        </h2>
+      );
+    }
+
+    case "heading_3": {
+      const { rich_text, is_toggleable } = block.heading_3;
+      if (is_toggleable) {
+        return (
+          <details className="mt-12 mb-6 lg:mt-16">
+            <summary
+              className={cn(
+                "cursor-pointer list-none text-xl",
+                "before:inline-block before:w-6 before:pr-2 before:text-right before:content-['▶︎'] [&::-webkit-details-marker]:hidden [[open]>&]:before:rotate-90",
+              )}
+            >
+              <RichText items={rich_text} />
+            </summary>
+            <ChildBlocks block={block} className="mt-4" />
+          </details>
+        );
+      }
+      return (
+        <h3 id={block.id} className="mt-12 mb-6 text-xl lg:mt-16 lg:text-2xl">
+          <RichText items={rich_text} />
+        </h3>
       );
     }
 
@@ -148,13 +161,13 @@ function NotionBlock({
       const caption = "caption" in block.image ? block.image.caption : [];
 
       return (
-        <figure className="mx-auto my-8 max-w-[552px]">
+        <figure className="my-8">
           <Image
             src={imageUrl}
             alt={caption.map((c) => c.plain_text).join("") || ""}
             width={0}
             height={0}
-            sizes="(max-width: 552px) 100vw, 552px"
+            sizes="(max-width: 744px) 100vw, 744px"
             className="h-auto w-full"
           />
           {caption.length > 0 && (
@@ -349,7 +362,7 @@ function NotionBlock({
       const youtubeId = extractYouTubeId(videoUrl);
 
       return (
-        <figure className="my-16">
+        <figure className="my-16 lg:my-20">
           {youtubeId ? (
             <iframe
               src={`https://www.youtube.com/embed/${youtubeId}`}

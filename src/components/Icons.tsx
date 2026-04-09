@@ -74,3 +74,11 @@ export function LogoIcon(props: React.SVGProps<SVGSVGElement>) {
     </svg>
   );
 }
+
+export function ArrowRightIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 7 8" fill="currentColor" {...props}>
+      <path d="M7 4L0 0V8L7 4Z" />
+    </svg>
+  );
+}
