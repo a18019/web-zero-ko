@@ -37,7 +37,7 @@ export default async function RootLayout({
       <body className="antialiased">
         <Header />
         <SubNav categories={categories} />
-        {children}
+        <main>{children}</main>
         <Cta />
         <Footer />
       </body>

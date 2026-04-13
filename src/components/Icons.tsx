@@ -1,3 +1,5 @@
+/** @license Font Awesome Free 7.2.0 | https://fontawesome.com | License - https://fontawesome.com/license/free | Copyright 2026 Fonticons, Inc. */
+
 export function XIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 640 640" fill="currentColor" {...props}>
