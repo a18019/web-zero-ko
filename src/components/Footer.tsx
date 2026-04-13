@@ -46,7 +46,8 @@ export default function Footer() {
                   href={socialLink.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="grid size-12 place-items-center"
+                  aria-label={socialLink.label}
+                  className="hover:bg-background grid size-12 place-items-center rounded-full"
                 >
                   <socialLink.icon aria-hidden="true" className="w-6" />
                 </a>
@@ -60,7 +61,7 @@ export default function Footer() {
               <li key={footerLink.label} className="grid place-items-center">
                 <Link
                   href={footerLink.href}
-                  className="text-xs"
+                  className="text-xs hover:underline hover:underline-offset-4"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

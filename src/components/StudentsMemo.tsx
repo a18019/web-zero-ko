@@ -20,13 +20,13 @@ export default async function StudentsMemo() {
         <li key={page.id} className="flex-none snap-center sm:snap-start">
           <Link
             href={`/articles/${page.id}`}
-            className="drop-shadow-card bg-background relative block aspect-4/5 w-[84vw] max-w-90 overflow-hidden rounded-3xl"
+            className="drop-shadow-card hover:drop-shadow-card-hover group bg-background relative block aspect-4/5 w-[84vw] max-w-90 overflow-hidden rounded-3xl"
           >
             <Image
               src={getStudentsMemoUrl(page, "/no-image.png")}
               alt=""
               fill
-              className="object-cover"
+              className="object-cover transition-[scale] group-hover:scale-105"
             />
             <div className="to-foreground/60 absolute right-0 bottom-0 left-0 bg-linear-to-b from-transparent p-6 text-white">
               <span className="text-foreground flex-none rounded-full bg-white px-[6px] py-[3px] text-[0.625rem]">

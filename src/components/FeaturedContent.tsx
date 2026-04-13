@@ -20,14 +20,14 @@ export default async function FeaturedContent() {
       {first && (
         <Link
           href={`/articles/${first.id}`}
-          className="bg-background drop-shadow-card flex flex-col overflow-hidden rounded-3xl"
+          className="group bg-background drop-shadow-card hover:drop-shadow-card-hover flex flex-col overflow-hidden rounded-3xl transition-[filter]"
         >
-          <div className="relative aspect-3/2 w-full">
+          <div className="relative aspect-3/2 w-full overflow-hidden">
             <Image
               src={getThumbnailUrl(first) || "/no-image.png"}
               alt=""
               fill
-              className="object-cover"
+              className="object-cover transition-[scale] group-hover:scale-105"
             />
           </div>
           <div className="flex grow flex-col justify-around px-6 pt-6 pb-8 lg:px-8 lg:pt-12 lg:pb-16">
@@ -44,16 +44,16 @@ export default async function FeaturedContent() {
               key={page.id}
               href={`/articles/${page.id}`}
               className={cn(
-                "drop-shadow-card flex items-center gap-6 overflow-hidden rounded-3xl px-6 pt-6 pb-8",
+                "drop-shadow-card group hover:drop-shadow-card-hover flex items-center gap-6 overflow-hidden rounded-3xl px-6 pt-6 pb-8",
                 i === 1 ? "bg-surface" : "bg-background",
               )}
             >
-              <div className="relative hidden aspect-video h-20 md:block">
+              <div className="relative hidden aspect-video h-20 shrink-0 overflow-hidden rounded-2xl md:block">
                 <Image
                   src={getThumbnailUrl(page) || "/no-image.png"}
                   fill
                   alt=""
-                  className="rounded-2xl object-cover"
+                  className="object-cover transition-[scale] group-hover:scale-105"
                 />
               </div>
               <div>

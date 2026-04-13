@@ -18,7 +18,7 @@ export default async function ArticleList() {
           <Link
             key={page.id}
             href={`/articles/${page.id}`}
-            className="grid grid-cols-[60%_1fr] gap-4"
+            className="group grid grid-cols-[60%_1fr] gap-4"
           >
             <div className="flex flex-col gap-2">
               <p className="text-xs">{getCategory(page)}</p>
@@ -29,7 +29,7 @@ export default async function ArticleList() {
                 src={getThumbnailUrl(page) || "/no-image.png"}
                 alt=""
                 fill
-                className="object-cover"
+                className="object-cover transition-[scale] group-hover:scale-105"
               />
             </div>
           </Link>

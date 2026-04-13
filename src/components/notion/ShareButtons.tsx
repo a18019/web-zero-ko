@@ -40,19 +40,19 @@ export function ShareButtons({ url, title }: { url: string; title: string }) {
           href={link.href}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex size-12 items-center justify-center"
+          className="hover:bg-surface flex size-12 items-center justify-center rounded-full"
           aria-label={link.label}
         >
-          <link.icon aria-hidden="true" className="size-5" />
+          <link.icon aria-hidden="true" className="size-6" />
         </a>
       ))}
       <button
         type="button"
         onClick={handleCopyLink}
-        className="flex size-12 items-center justify-center"
+        className="hover:bg-surface flex size-12 items-center justify-center rounded-full"
         aria-label="リンクをコピー"
       >
-        <LinkIcon aria-hidden="true" className="size-5" />
+        <LinkIcon aria-hidden="true" className="size-6" />
       </button>
     </div>
   );

@@ -53,16 +53,16 @@ export default async function TeacherFeatures() {
           <Link
             href={`/articles/${teacher.id}`}
             className={cn(
-              "drop-shadow-card block aspect-4/5 w-[84vw] max-w-90 overflow-hidden rounded-3xl",
+              "drop-shadow-card hover:drop-shadow-card-hover group block aspect-4/5 w-[84vw] max-w-90 overflow-hidden rounded-3xl",
               i % 2 === 1 ? "bg-surface" : "bg-background",
             )}
           >
-            <div className="relative aspect-video w-full">
+            <div className="relative aspect-video w-full overflow-hidden">
               <Image
                 src={teacher.thumbnail}
                 alt=""
                 fill
-                className="object-cover"
+                className="object-cover transition-[scale] group-hover:scale-105"
               />
             </div>
             <div className="mt-4 px-6">

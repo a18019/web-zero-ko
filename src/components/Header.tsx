@@ -83,7 +83,7 @@ export default function Header() {
             {pcNavButtons.map((navButton) => (
               <li key={navButton.label} className="-ml-2">
                 <a
-                  className="bg-foreground text-background grid h-8 place-items-center rounded-full border px-3 text-xs hover:scale-102"
+                  className="bg-foreground text-background grid h-8 place-items-center rounded-full border px-3 text-xs"
                   href={navButton.href}
                   target="_blank"
                   rel="noopener noreferrer"
